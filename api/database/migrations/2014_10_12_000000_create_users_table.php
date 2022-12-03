@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('email')->unique();
             $table->string('no_hp');
-            $table->enum('role', ['user','admin']);
-            $table->boolean('status');
+            $table->string('foto');
+            $table->enum('role', ['user','admin'])->default('user');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

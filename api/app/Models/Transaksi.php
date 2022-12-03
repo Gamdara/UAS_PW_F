@@ -12,4 +12,9 @@ class Transaksi extends Model
         'id_user',
         'tanggal'
     ];
+
+    public $rules = [
+        'id_user' => 'required',
+        'tanggal' => 'required',
+    ];
 }

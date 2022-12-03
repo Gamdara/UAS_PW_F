@@ -11,4 +11,8 @@ class Genre extends Model
     protected $fillable = [
         'nama'
     ];
+
+    public $rules = [
+        'nama' => 'required',
+    ];
 }

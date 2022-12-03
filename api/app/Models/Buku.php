@@ -22,4 +22,18 @@ class Buku extends Model
         'stok',
         'cover'
     ];
+
+    public $rules = [
+        'id_penulis' => 'required',
+        'id_genre' => 'required',
+        'judul' => 'required',
+        'sinopsis' => 'required',
+        'halaman' => 'required',
+        'penerbit' => 'required',
+        'isbn' => 'required',
+        'bahasa' => 'required',
+        'tgl_terbit' => 'required',
+        'stok' => 'required',
+        'cover' => 'required'
+    ];
 }

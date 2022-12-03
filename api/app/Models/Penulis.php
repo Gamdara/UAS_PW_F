@@ -12,6 +12,13 @@ class Penulis extends Model
         'id',
         'nama',
         'tgl_lahir',
-        'asal'
+        'asal',
+    ];
+
+    public $rules = [
+        'id' => 'required',
+        'nama' => 'required',
+        'tgl_lahir' => 'required',
+        'asal' => 'required',
     ];
 }

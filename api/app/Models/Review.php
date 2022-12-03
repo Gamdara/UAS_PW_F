@@ -12,6 +12,13 @@ class Review extends Model
         'id_buku',
         'id_user',
         'nilai',
-        'komentar'
+        'komentar',
+    ];
+
+    public $rules = [
+        'id_buku' => 'required',
+        'id_user' => 'required',
+        'nilai' => 'required',
+        'komentar' => 'required',
     ];
 }

@@ -13,4 +13,10 @@ class Keranjang extends Model
         'id_buku',
         'jumlah'
     ];
+
+    public $rules = [
+        'id_user' => 'required',
+        'id_buku' => 'required',
+        'jumlah' => 'required',
+    ];
 }
