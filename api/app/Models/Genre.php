@@ -12,7 +12,7 @@ class Genre extends Model
         'nama'
     ];
 
-    public $rules = [
+    public static $rules = [
         'nama' => 'required',
     ];
 }

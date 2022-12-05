@@ -15,7 +15,7 @@ class DetailTransaksi extends Model
         'subtotal'
     ];
 
-    public $rules = [
+    public static $rules = [
         'id_transaksi' => 'required',
         'id_buku'  => 'required',
         'jumlah' => 'required',

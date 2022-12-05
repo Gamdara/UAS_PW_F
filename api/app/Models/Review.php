@@ -15,7 +15,7 @@ class Review extends Model
         'komentar',
     ];
 
-    public $rules = [
+    public static $rules = [
         'id_buku' => 'required',
         'id_user' => 'required',
         'nilai' => 'required',

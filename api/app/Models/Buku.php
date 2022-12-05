@@ -23,7 +23,7 @@ class Buku extends Model
         'cover'
     ];
 
-    public $rules = [
+    public static $rules = [
         'id_penulis' => 'required',
         'id_genre' => 'required',
         'judul' => 'required',

@@ -15,7 +15,7 @@ class Penulis extends Model
         'asal',
     ];
 
-    public $rules = [
+    public static $rules = [
         'id' => 'required',
         'nama' => 'required',
         'tgl_lahir' => 'required',

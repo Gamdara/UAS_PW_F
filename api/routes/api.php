@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BukuController;
+use App\Http\Controllers\GenreController;
 use App\Http\Controllers\VerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,5 +25,5 @@ Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name
 Route::get('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 
 Route::middleware(['auth:sanctum','verified'])->group(function () {
-    Route::apiResource('bukus', BukuController::class);
+    Route::apiResource('genres', GenreController::class);
 });

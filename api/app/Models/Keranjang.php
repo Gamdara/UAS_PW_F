@@ -14,7 +14,7 @@ class Keranjang extends Model
         'jumlah'
     ];
 
-    public $rules = [
+    public static $rules = [
         'id_user' => 'required',
         'id_buku' => 'required',
         'jumlah' => 'required',

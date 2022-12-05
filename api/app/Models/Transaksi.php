@@ -13,7 +13,7 @@ class Transaksi extends Model
         'tanggal'
     ];
 
-    public $rules = [
+    public static $rules = [
         'id_user' => 'required',
         'tanggal' => 'required',
     ];

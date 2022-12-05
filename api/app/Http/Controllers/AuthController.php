@@ -20,8 +20,7 @@ class AuthController extends Controller
     {
         try {
             //Validated
-            $model = new User();
-            $validateUser = Validator::make($request->all(),$model->rules);
+            $validateUser = Validator::make($request->all(),User::$rules);
 
             if($validateUser->fails()){
                 return response()->json([

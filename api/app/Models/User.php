@@ -28,7 +28,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'foto'
     ];
 
-    public $rules = [
+    public static $rules = [
         "username" => "required",
         "password" => "required",
         "nama" => "required",
