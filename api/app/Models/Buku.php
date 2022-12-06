@@ -10,8 +10,8 @@ class Buku extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id_penulis',
-        'id_genre',
+        'penulis_id',
+        'genre_id',
         'judul',
         'sinopsis',
         'halaman',
@@ -24,16 +24,26 @@ class Buku extends Model
     ];
 
     public static $rules = [
-        'id_penulis' => 'required',
-        'id_genre' => 'required',
-        'judul' => 'required',
-        'sinopsis' => 'required',
-        'halaman' => 'required',
-        'penerbit' => 'required',
-        'isbn' => 'required',
-        'bahasa' => 'required',
-        'tgl_terbit' => 'required',
-        'stok' => 'required',
-        'cover' => 'required'
+        "penulis_id" => "required",
+        "genre_id" => "required",
+        "judul" => "required",
+        "sinopsis" => "required",
+        "halaman" => "required",
+        "penerbit" => "required",
+        "isbn" => "required",
+        "bahasa" => "required",
+        "tgl_terbit" => "required",
+        "stok" => "required",
+        "cover" => "required"
     ];
+
+    public function genre()
+    {
+        return $this->hasOne(Genre::class, 'id');
+    }
+
+    public function penulis()
+    {
+        return $this->hasOne(Penulis::class, 'id');
+    }
 }

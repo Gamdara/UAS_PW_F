@@ -9,16 +9,14 @@ class Penulis extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id',
         'nama',
         'tgl_lahir',
         'asal',
     ];
 
     public static $rules = [
-        'id' => 'required',
-        'nama' => 'required',
-        'tgl_lahir' => 'required',
-        'asal' => 'required',
+        "nama" => "required",
+        "tgl_lahir" => "required",
+        "asal" => "required",
     ];
 }

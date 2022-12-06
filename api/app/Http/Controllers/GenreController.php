@@ -18,19 +18,11 @@ class GenreController extends Controller
         //
         $data = Genre::all();
 
-        if(count($data) > 0){
-            return response([
-                'status' => true,
-                'message' => 'Retrieve All Success',
-                'data' => $data,
-            ], 200);
-        }
-
         return response([
             'status' => true,
-            'message' => 'Empty',
-            'data' => null,
-        ], 400);
+            'message' => 'Retrieve All Success',
+            'data' => $data,
+        ], 200);
     }
 
     /**

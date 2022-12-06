@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Buku;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class BukuController extends Controller
 {
@@ -15,16 +16,13 @@ class BukuController extends Controller
     public function index()
     {
         //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $data = Buku::with('penulis')->with('genre')->get();
+        
+        return response([
+            'status' => true,
+            'message' => 'Retrieve All Success',
+            'data' => $data,
+        ], 200);
     }
 
     /**
@@ -36,50 +34,117 @@ class BukuController extends Controller
     public function store(Request $request)
     {
         //
+        $storeData = $request->all();
+        
+        $validate = Validator::make($storeData, Buku::$rules);
+
+        if($validate->fails())
+            return response(['status' => false,'message' => $validate->errors()], 400);
+
+        $data = Buku::create($storeData);
+        return response([
+            'status' => true,
+            'message' => 'Add data Success',
+            'data' => $data,
+        ], 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Buku  $buku
+     * @param  \App\Models\Buku  $Buku
      * @return \Illuminate\Http\Response
      */
-    public function show(Buku $buku)
+    public function show($id)
     {
         //
-    }
+        $data = Buku::with('penulis')->with('genre')->find($id);
+        if(!is_null($data)){
+            return response([
+                'status' => true,
+                'message' => 'Retrieve data Success',
+                'data' => $data,
+            ], 200);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Buku  $buku
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Buku $buku)
-    {
-        //
+        return response([
+            'status' => false,
+            'message' => 'data Not Found',
+            'data' => null,
+        ], 404);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Buku  $buku
+     * @param  \App\Models\Buku  $Buku
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Buku $buku)
+    public function update(Request $request, $id)
     {
         //
+        $data = Buku::find($id);
+
+        if(is_null($data)){
+            return response([
+                'message' => 'data Not Found',
+                'data' => null,
+            ], 404);
+        }
+
+        $updateData = $request->all();
+        $validate = Validator::make($updateData, Buku::$rules);
+
+        if($validate->fails())
+            return response(['status'=>false,'message' => $validate->errors()], 400);
+
+        if($data->update($updateData)){
+            return response([
+                'status'=>true,
+                'message' => 'Update data Success',
+                'data' => $data,
+            ], 200);
+        }
+
+        return response([
+            'status'=>false,
+            'message' => 'Update data Failed',
+            'data' => $data,
+        ], 400);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Buku  $buku
+     * @param  \App\Models\Buku  $Buku
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Buku $buku)
+    public function destroy($id)
     {
         //
+        $data = Buku::find($id);
+
+        if(is_null($data)){
+            return response([
+                'status'=>false,
+                'message' => 'data Not Found',
+                'data' => null,
+            ], 404);
+        }
+
+        if($data->delete()){
+            return response([
+                'status'=>true,
+                'message' => 'Delete data Success',
+                'data' => $data,
+            ], 200);
+        }
+
+        return response([
+            'status'=>false,
+            'message' => 'Delete data Failed',
+            'data' => null,
+        ], 400);
     }
 }
