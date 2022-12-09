@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Buku;
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+
 
 class ReviewController extends Controller
 {
@@ -14,7 +18,13 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        //
+        //test
+        $reviews = Review::all();
+        return response()->json([
+            'success' => true,
+            'message' => 'Daftar Data Review',
+            'data' => $reviews
+        ], 200);
     }
 
     /**
@@ -35,7 +45,39 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // store review book api
+        // take all data from request
+        $data = $request->all();
+
+
+        // validate data
+        $validate = Validator::make($data, [
+            'id_user' => 'required',
+            'id_buku' => 'required',
+            'nilai' => 'required|numeric|between:1,5',
+            'komentar' => 'required',
+        ]);
+
+
+        // if validation failed
+        if ($validate->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $validate->errors(),
+            ], 400);
+        }
+
+        // if validation success
+
+        // store review
+        $review = Review::create($data);
+        // return response
+        return response()->json([
+            'status' => 'success',
+            'data' => $review,
+        ], 200);
+
+
     }
 
     /**
@@ -46,7 +88,22 @@ class ReviewController extends Controller
      */
     public function show(Review $review)
     {
-        //
+        // show review by ID
+        // find review by id
+        $review = Review::find($review->id);
+        // if review not found
+        if (!$review) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'review not found',
+            ], 404);
+        }
+        // if review found
+        return response()->json([
+            'status' => 'success',
+            'data' => $review,
+        ], 200);
+
     }
 
     /**
@@ -69,7 +126,48 @@ class ReviewController extends Controller
      */
     public function update(Request $request, Review $review)
     {
-        //
+        //update review
+        // take all data from request
+        $data = $request->all();
+
+        // validate data
+        $validate = Validator::make($data, [
+            'id_user' => 'required',
+            'id_buku' => 'required',
+            'nilai' => 'required|numeric|between:1,5',
+            'komentar' => 'required',
+        ]);
+
+        // if validation failed
+        if ($validate->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $validate->errors(),
+            ], 400);
+        }
+
+        // if validation success
+        // find review by id
+        $review = Review::find($review->id);
+
+        // if review not found
+        if (!$review) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'review not found',
+            ], 404);
+        }
+
+        // if review found
+
+        // update review
+        $review->update($data);
+
+        // return response
+        return response()->json([
+            'status' => 'success',
+            'data' => $review,
+        ], 200);
     }
 
     /**

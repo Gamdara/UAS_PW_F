@@ -4,8 +4,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import UserLayout from '../layout/UserLayout.vue'
-import AdminLayout from '../layout/AdminLayout.vue'
-import HelloWorld from '../components/HelloWorld.vue'
 
 Vue.use(VueRouter)
 
@@ -19,17 +17,6 @@ const routes = [
         path: '/',
         name: 'Home',
         component: HomeView
-      }
-    ]
-  },
-  {
-    path: '/admin',
-    component: AdminLayout,
-    children: [
-      {
-        path: '/',
-        name: 'AdminHome',
-        component: HelloWorld
       }
     ]
   },
