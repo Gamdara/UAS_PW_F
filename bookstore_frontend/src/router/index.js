@@ -6,6 +6,7 @@ import HomeView from '../views/HomeView.vue'
 import UserLayout from '../layout/UserLayout.vue'
 import AdminLayout from '../layout/AdminLayout.vue'
 import HelloWorld from '../components/HelloWorld.vue'
+import Genre from '../views/admin/Genres.vue'
 
 Vue.use(VueRouter)
 
@@ -30,6 +31,11 @@ const routes = [
         path: '/',
         name: 'AdminHome',
         component: HelloWorld
+      },
+      {
+        path: '/admin/genre',
+        name: 'AdminGenre',
+        component: Genre
       }
     ]
   },

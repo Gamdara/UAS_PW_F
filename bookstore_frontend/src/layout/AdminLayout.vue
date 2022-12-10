@@ -1,29 +1,34 @@
 <template>
     <div>
         <v-navigation-drawer
-            v-model="drawer"
+            dark
+            permanent
             app
             clipped
+            :mini-variant.sync="drawer"
         >
             <v-list
             nav
             dense
+            dark
+            @hover="(drawer=true)"
             >
             <v-list-item-group
-                v-model="group"
-                active-class="deep-purple--text text--accent-4"
+                dark
+                active-class=""
             >
-                <v-list-item>
+                <v-list-item v-for="link in links" :key="link.title" :to="link.link">
                     <v-list-item-icon>
-                        <v-icon>mdi-home</v-icon>
+                        <v-icon>{{link.icon}}</v-icon>
                     </v-list-item-icon>
-                    <v-list-item-title>Home</v-list-item-title>
+                    <v-list-item-title>{{link.title}}</v-list-item-title>
                 </v-list-item>
-                <v-list-item>
-                <v-list-item-icon>
-                    <v-icon>mdi-account</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title>Account</v-list-item-title>
+                <v-spacer></v-spacer>
+                <v-list-item @click="logout">
+                    <v-list-item-icon>
+                        <v-icon>mdi-logout</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Logout</v-list-item-title>
                 </v-list-item>
             </v-list-item-group>
             </v-list>
@@ -36,7 +41,7 @@
             app
         >
             <v-app-bar-nav-icon @click="(drawer = !drawer)"></v-app-bar-nav-icon>
-            <v-toolbar-title>Title</v-toolbar-title>
+            <v-toolbar-title>Admin</v-toolbar-title>
         </v-app-bar>
         <v-main>
             <v-container fluid>
@@ -56,6 +61,18 @@ export default {
     name: 'AdminLayout',
     data: () => ({
       drawer: false,
+      links: [
+        {
+          icon: 'mdi-home',
+          title: 'Home',
+          link: {name: 'AdminHome'}
+        },
+        {
+          icon: 'mdi-account',
+          title: 'Account',
+          link: {name: 'AdminGenre'}
+        }
+      ]
     }),
     methods: {
         logout(){
