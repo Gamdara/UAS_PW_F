@@ -1,5 +1,5 @@
 // import auth from '@/middleware/auth'
-import logged from '@/middleware/logged'
+// import logged from '@/middleware/logged'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import HomeView from '../views/HomeView.vue'
@@ -20,6 +20,17 @@ const routes = [
         path: '/',
         name: 'Home',
         component: HomeView
+      },
+      {
+        path: '/login',
+        name: 'login',
+        component: () => import(/* webpackChunkName: "store" */ '../views/LoginView.vue')
+        // beforeEnter: logged
+      },
+      {
+        path: '/about',
+        name: 'about',
+        component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
       }
     ]
   },
@@ -38,17 +49,6 @@ const routes = [
         component: Genre
       }
     ]
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import(/* webpackChunkName: "store" */ '../views/LoginView.vue'),
-    beforeEnter: logged
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
   }
 ]
 
