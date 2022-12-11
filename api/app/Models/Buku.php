@@ -33,17 +33,22 @@ class Buku extends Model
         "isbn" => "required",
         "bahasa" => "required",
         "tgl_terbit" => "required",
-        "stok" => "required",
-        "cover" => "required"
+        "stok" => "required"
     ];
 
     public function genre()
     {
-        return $this->hasOne(Genre::class, 'id');
+        return $this->belongsTo(Genre::class);
     }
 
     public function penulis()
     {
-        return $this->hasOne(Penulis::class, 'id');
+        return $this->belongsTo(Penulis::class);
     }
+
+    public function rating()
+    {
+        return $this->hasMany(Review::class);
+    }
+    
 }

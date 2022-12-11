@@ -102,7 +102,7 @@ export default {
 
     function fetchAll () {
       isLoading.value = true
-      client.get('bukus')
+      client.get('buku')
       .then(response => {
         isLoading.value = false
         datas.value = response.data.data

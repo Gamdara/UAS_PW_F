@@ -2,7 +2,7 @@
   <div>
     <v-card class="mt-4">
         <v-card-title>
-            <v-list-item-title class="headline">Genres </v-list-item-title>
+            <v-list-item-title class="headline">Penulis </v-list-item-title>
         </v-card-title>
         <v-data-table
             :headers="headers"
@@ -57,12 +57,39 @@
             <v-toolbar
             color="brown darken-1"
             dark
-            class="headline">{{toInsert ? 'Tambah Genre' : 'Edit Genre'}}</v-toolbar>
+            class="headline">{{toInsert ? 'Tambah penulis' : 'Edit penulis'}}</v-toolbar>
             <v-card-text>
                 <v-container>
                     <v-text-field
                     v-model="formContent.nama"
                     label="Name"
+                    required
+                    ></v-text-field>
+                    <v-menu
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        :nudge-right="40"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                    >
+                        <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                            v-model="formContent.tgl_lahir"
+                            label="Tanggal lahir"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+                        </template>
+                        <v-date-picker
+                        v-model="formContent.tgl_lahir"
+                        @input="menu = false"
+                        ></v-date-picker>
+                    </v-menu>
+                    <v-text-field
+                    v-model="formContent.asal"
+                    label="Asal"
                     required
                     ></v-text-field>
                 </v-container>
@@ -94,7 +121,7 @@
 import client from '@/api/request';
 import { onMounted, reactive, ref } from 'vue';
 export default {
-    name: 'AdminGenre',
+    name: 'AdminPenulis',
     setup() {
         const data = ref([])
         const validation = ref([])
@@ -106,7 +133,7 @@ export default {
 
         function del(id) {
             isLoading.value = true
-            client.delete('genre/'+id)
+            client.delete('penulis/'+id)
             .then(() => {
                 isLoading.value = false
                 fetchAll()
@@ -119,7 +146,7 @@ export default {
 
         function update(data) {
             isLoading.value = true
-            client.post('genre/'+data.id+'?_method=PUT',data)
+            client.post('penulis/'+data.id+'?_method=PUT',data)
             .then(() => {
                 isLoading.value = false
                 fetchAll()
@@ -132,7 +159,7 @@ export default {
 
         function fetchAll(){
             isLoading.value = true
-            client.get('genre')
+            client.get('penulis')
             .then(response => {
                 isLoading.value = false
                 data.value = response.data.data
@@ -145,7 +172,7 @@ export default {
 
         function insert(data){
             isLoading.value = true
-            client.post('genre',data)
+            client.post('penulis',data)
             .then(response => {
                 isLoading.value = false
                 fetchAll()
@@ -172,6 +199,7 @@ export default {
             timeout: 1000,
             toInsert: true,
             itemContent: [],
+            menu: false,
             confirm: false,
             headers: [
                 {
@@ -180,10 +208,14 @@ export default {
                     sortable: true,
                     value: "nama",
                 },
+                { text: "Tanggal Lahir", value: "tgl_lahir" },
+                { text: "Asal", value: "asal" },
                 { text: "Actions", value: "actions" },
             ],
             formContent: {
-                nama: null
+                nama: null,
+                tgl_lahir: null,
+                asal: null
             }
         };
     },
@@ -195,7 +227,9 @@ export default {
         },
         resetForm() {
             this.formContent = {
-                nama: null
+                nama: null,
+                tgl_lahir: null,
+                asal: null
             };
         },
         setEditItem(){

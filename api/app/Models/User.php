@@ -32,9 +32,8 @@ class User extends Authenticatable implements MustVerifyEmail
         "username" => "required",
         "password" => "required",
         "nama" => "required",
-        "email" => "required",
-        "no_hp" => "required",
-        "foto" => "required",
+        "email" => "required|email",
+        "no_hp" => "required"
     ];
 
     /**

@@ -9,16 +9,19 @@ class Review extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id_buku',
-        'id_user',
+        'buku_id',
+        'user_id',
         'nilai',
         'komentar',
     ];
 
     public static $rules = [
-        'id_buku' => 'required',
-        'id_user' => 'required',
+        'buku_id' => 'required',
         'nilai' => 'required',
         'komentar' => 'required',
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

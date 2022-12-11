@@ -108,9 +108,13 @@ export default {
         drawer: false,
     }),
     methods: {
-        logout() {
-            localStorage.removeItem('token')
-            this.$router.push('/login')
+        logout(){
+            client.get('logout')
+            .then(res=> {
+                localStorage.removeItem('token')
+                this.$router.push('/login')
+            })
+            .catch(err=> console.log(err) )
         }
     }
 }
