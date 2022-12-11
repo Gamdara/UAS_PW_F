@@ -1,4 +1,4 @@
-// import auth from '@/middleware/auth'
+import auth from '@/middleware/auth'
 // import logged from '@/middleware/logged'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -27,6 +27,12 @@ const routes = [
         path: '/login',
         name: 'login',
         component: () => import(/* webpackChunkName: "store" */ '../views/LoginView.vue')
+        // beforeEnter: logged
+      },
+      {
+        path: '/register',
+        name: 'register',
+        component: () => import(/* webpackChunkName: "store" */ '../views/RegisterView.vue')
         // beforeEnter: logged
       },
       {
@@ -63,19 +69,19 @@ const routes = [
         component: Buku
       }
     ]
-  },
+  }
   // {
   //   path: '/login',
   //   name: 'login',
   //   component: () => import(/* webpackChunkName: "store" */ '../views/LoginView.vue'),
   //   beforeEnter: logged
   // },
-  {
-    path: '/register',
-    name: 'register',
-    component: () => import(/* webpackChunkName: "store" */ '../views/RegisterView.vue'),
-    beforeEnter: logged
-  }
+  // {
+  //   path: '/register',
+  //   name: 'register',
+  //   component: () => import(/* webpackChunkName: "store" */ '../views/RegisterView.vue'),
+  //   beforeEnter: logged
+  // }
   // {
   //   path: '/about',
   //   name: 'about',

@@ -1,43 +1,20 @@
 <template>
-  <v-container fill-height fluid >
-    <v-card
-      elevation="2"
-      class="mx-auto pa-4"
-    >
-      <v-text-field
-          label="username"
-          v-model="user.username"
-          :error-messages="errors.username"
-        >
-        </v-text-field>
-      <v-text-field
-          label="nama"
-          v-model="user.nama"
-          :error-messages="errors.nama"
-        >
-        </v-text-field>
-      <v-text-field
-          label="Email"
-          v-model="user.email"
-          :error-messages="errors.email"
-        >
-        </v-text-field>
-      <v-text-field
-          label="no_hp"
-          v-model="user.no_hp"
-          :error-messages="errors.no_hp"
-        >
-        </v-text-field>
-      <v-text-field
-          label="Password"
-          v-model="user.password"
-          :error-messages="errors.password"
-        >
-        </v-text-field>
-      <v-file-input v-model="user.foto" :error-messages="errors.foto" label="Foto" ></v-file-input>
-      <v-btn block :loading="isLoading" @click="login()">Login</v-btn>
-    </v-card>
-  </v-container>
+  <div id="background">
+    <v-container fill-height fluid>
+      <v-card elevation="2" class="mx-auto pa-4 register">
+        <h2 class="text-center " style="font-weight: 900;">DAFTAR</h2>
+        <p class="text-center mb-5">Selamat Datang di <b>Armedia</b>,<br>Toko buku termurah dan terlengkap di Yogyakarta</p>
+        <v-text-field label="Nama" v-model="user.nama" placeholder="Masukkan Nama" :error-messages="errors.nama" outlined></v-text-field>
+        <v-text-field label="Username" v-model="user.username" placeholder="Masukkan Username" :error-messages="errors.username" outlined></v-text-field>
+        <v-text-field label="Email" v-model="user.email" placeholder="Masukkan Email" :error-messages="errors.email" outlined></v-text-field>
+        <v-text-field label="No Handphone" v-model="user.no_hp" placeholder="Masukkan No Handphone" :error-messages="errors.no_hp" outlined></v-text-field>
+        <v-text-field label="Password" type="password" v-model="user.password" placeholder="Masukkan Password" :error-messages="errors.password" outlined></v-text-field>
+        <v-file-input v-model="user.foto" :error-messages="errors.foto" placeholder="Upload Foto" label="Upload Foto" outlined show-size dense></v-file-input>
+        <v-btn block :loading="isLoading" @click="login()" outlined color="success">Daftar</v-btn>
+        <p class="mt-3 text-center">Sudah Punya Akun? <router-link to="/login">Masuk</router-link></p>
+      </v-card>
+    </v-container>
+  </div>
 </template>
 <script>
 import axios from 'axios'
@@ -55,23 +32,48 @@ export default {
   }),
 
   methods: {
-    login () {
+    login() {
       this.isLoading = true
-      axios.post('http://127.0.0.1:8000/api/'+"register", this.user, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-      } )
-      .then(res => {
-        this.isLoading = false
-        this.$router.push('/login')
+      axios.post('http://127.0.0.1:8000/api/' + "register", this.user, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       })
-      .catch(err => {
-        this.isLoading = false; 
-        console.log(err);
-        this.errors = err.response.data.errors || {}
-      })
+        .then(res => {
+          this.isLoading = false
+          this.$router.push('/login')
+        })
+        .catch(err => {
+          this.isLoading = false;
+          console.log(err);
+          this.errors = err.response.data.errors || {}
+        })
     }
   }
 }
 </script>
+<style>
+  .register{
+    /* margin-top: 100px; */
+    margin: auto;
+    width: 550px;
+    /* max-width: 550px; */
+    /* text-align: center !important; */
+    padding: 20px;
+    border: 8px solid rgb(5,111,111);
+    border-radius: 3px;
+  }
+
+  #background {
+    background: url(https://img.freepik.com/free-vector/digital-technology-background-with-abstract-wave-border_53876-117508.jpg?w=2000);
+    min-height: 92vh;
+    display: flex;
+  }
+
+  @media screen and (max-width: 1316px){
+    .register{
+      border: 5px solid rgb(5,111,111);
+    }
+  }
+</style>
+
