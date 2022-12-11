@@ -1,4 +1,4 @@
-import auth from '@/middleware/auth'
+// import auth from '@/middleware/auth'
 import logged from '@/middleware/logged'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -16,7 +16,7 @@ const routes = [
   {
     path: '/',
     component: UserLayout,
-    beforeEnter: auth,
+    // beforeEnter: auth,
     children: [
       {
         path: '/',
