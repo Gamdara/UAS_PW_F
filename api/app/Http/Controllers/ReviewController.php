@@ -19,7 +19,7 @@ class ReviewController extends Controller
     public function index()
     {
         //test
-        $reviews = Review::all();
+        $reviews = Review::with('user')->get();
         return response()->json([
             'success' => true,
             'message' => 'Daftar Data Review',
@@ -45,19 +45,8 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-        // store review book api
-        // take all data from request
-        $data = $request->all();
-
-
         // validate data
-        $validate = Validator::make($data, [
-            'id_user' => 'required',
-            'id_buku' => 'required',
-            'nilai' => 'required|numeric|between:1,5',
-            'komentar' => 'required',
-        ]);
-
+        $validate = Validator::make($request->all(), Review::$rules);
 
         // if validation failed
         if ($validate->fails()) {
@@ -67,14 +56,16 @@ class ReviewController extends Controller
             ], 400);
         }
 
-        // if validation success
-
         // store review
-        $review = Review::create($data);
+        $data = Review::firstOrNew(['user_id' => auth()->user()->id, 'buku_id' => $request->buku_id]);
+        $data->nilai = $request->nilai;
+        $data->komentar = $request->komentar;
+        $data->save();
+
         // return response
         return response()->json([
             'status' => 'success',
-            'data' => $review,
+            'data' => $data,
         ], 200);
 
 
@@ -126,48 +117,7 @@ class ReviewController extends Controller
      */
     public function update(Request $request, Review $review)
     {
-        //update review
-        // take all data from request
-        $data = $request->all();
-
-        // validate data
-        $validate = Validator::make($data, [
-            'id_user' => 'required',
-            'id_buku' => 'required',
-            'nilai' => 'required|numeric|between:1,5',
-            'komentar' => 'required',
-        ]);
-
-        // if validation failed
-        if ($validate->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $validate->errors(),
-            ], 400);
-        }
-
-        // if validation success
-        // find review by id
-        $review = Review::find($review->id);
-
-        // if review not found
-        if (!$review) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'review not found',
-            ], 404);
-        }
-
-        // if review found
-
-        // update review
-        $review->update($data);
-
-        // return response
-        return response()->json([
-            'status' => 'success',
-            'data' => $review,
-        ], 200);
+        // jadi satu sama create
     }
 
     /**

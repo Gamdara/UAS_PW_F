@@ -9,16 +9,24 @@ class DetailTransaksi extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id_transaksi',
-        'id_buku',
+        'transaksi_id',
+        'buku_id',
         'jumlah',
         'subtotal'
     ];
 
     public static $rules = [
-        'id_transaksi' => 'required',
-        'id_buku'  => 'required',
+        'transaksi_id' => 'required',
+        'buku_id'  => 'required',
         'jumlah' => 'required',
         'subtotal' => 'required'
     ];
+
+    public function bukus(){
+        return $this->belongsTo(Buku::class,'buku_id','id');
+    }
+
+    public function transaksi(){
+        return $this->belongsTo(Transaksi::class);
+    }
 }

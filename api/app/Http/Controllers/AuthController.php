@@ -19,8 +19,10 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         try {
-            //Validated
-            $validateUser = Validator::make($request->all(),User::$rules);
+            $data = $request->all();
+            if($request->hasFile('foto')) $data['foto'] = ImageUpload::uploadImage($request, 'foto');
+
+            $validateUser = Validator::make($data,User::$rules);
 
             if($validateUser->fails()){
                 return response()->json([
@@ -29,8 +31,7 @@ class AuthController extends Controller
                     'errors' => $validateUser->errors()
                 ], 401);
             }
-
-            $data = $request->all();
+            
             $data['password'] = Hash::make($data['password']);
 
             $user = User::create($data);
@@ -81,6 +82,13 @@ class AuthController extends Controller
 
             $user = User::where('email', $request->email)->first();
 
+            if (!$user->hasVerifiedEmail()) {
+                return response()->json([
+                    'status' => false,
+                    "message" => "Email belum terverifikasi."
+                ], 400);
+            }
+
             return response()->json([
                 'status' => true,
                 'message' => 'User Logged In Successfully',
@@ -96,10 +104,10 @@ class AuthController extends Controller
     }
 
     // logout
-    public function logout(Request $request)
+    public function logout()
     {
         try {
-            $request->user()->currentAccessToken()->delete();
+            auth()->user()->currentAccessToken()->delete();
 
             return response()->json([
                 'status' => true,

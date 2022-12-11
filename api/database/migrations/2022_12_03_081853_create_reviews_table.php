@@ -14,9 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('reviews', function (Blueprint $table) {
-            $table->id();
             $table->foreignId('buku_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('penulis_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->float('nilai');
             $table->text('komentar');
             $table->timestamps();

@@ -36,12 +36,15 @@ class BukuController extends Controller
         //
         $storeData = $request->all();
         
+        if($request->hasFile('cover')) $storeData['cover'] = ImageUpload::uploadImage($request, 'cover');
+
         $validate = Validator::make($storeData, Buku::$rules);
 
         if($validate->fails())
             return response(['status' => false,'message' => $validate->errors()], 400);
 
         $data = Buku::create($storeData);
+        
         return response([
             'status' => true,
             'message' => 'Add data Success',
@@ -95,6 +98,8 @@ class BukuController extends Controller
 
         $updateData = $request->all();
         $validate = Validator::make($updateData, Buku::$rules);
+
+        if($request->hasFile('cover')) $updateData['cover'] = ImageUpload::uploadImage($request, 'cover');
 
         if($validate->fails())
             return response(['status'=>false,'message' => $validate->errors()], 400);

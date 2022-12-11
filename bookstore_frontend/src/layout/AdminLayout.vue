@@ -56,6 +56,9 @@
 
 <script>
 /* eslint-disable */
+
+import client from '@/api/request';
+
 // import client from '@/api/request'
 export default {
     name: 'AdminLayout',
@@ -68,16 +71,30 @@ export default {
           link: {name: 'AdminHome'}
         },
         {
-          icon: 'mdi-account',
-          title: 'Account',
+          icon: 'mdi-book',
+          title: 'Genre',
           link: {name: 'AdminGenre'}
+        },
+        {
+          icon: 'mdi-accoubt',
+          title: 'Penulis',
+          link: {name: 'AdminPenulis'}
+        },
+        {
+          icon: 'mdi-book',
+          title: 'Buku',
+          link: {name: 'AdminBuku'}
         }
       ]
     }),
     methods: {
         logout(){
-            localStorage.removeItem('token')
-            this.$router.push('/login')
+            client.get('logout')
+            .then(res=> {
+                localStorage.removeItem('token')
+                this.$router.push('/login')
+            })
+            .catch(err=> console.log(err) )
         }
     }
 }

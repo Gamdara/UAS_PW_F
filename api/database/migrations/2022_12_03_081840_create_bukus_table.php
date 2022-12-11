@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('bahasa');
             $table->date('tgl_terbit');
             $table->integer('stok');
-            $table->string('cover');
+            $table->string('cover')->nullable();
             $table->timestamps();
         });
     }

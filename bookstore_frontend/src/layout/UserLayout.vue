@@ -60,8 +60,12 @@ export default {
     }),
     methods: {
         logout(){
-            localStorage.removeItem('token')
-            this.$router.push('/login')
+            client.get('logout')
+            .then(res=> {
+                localStorage.removeItem('token')
+                this.$router.push('/login')
+            })
+            .catch(err=> console.log(err) )
         }
     }
 }

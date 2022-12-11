@@ -15,4 +15,6 @@ class Genre extends Model
     public static $rules = [
         'nama' => 'required',
     ];
+
+    
 }

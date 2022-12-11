@@ -18,7 +18,7 @@ class TransaksiController extends Controller
     public function index()
     {
         //alll transaction book
-        $transaksi = Transaksi::all();
+        $transaksi = Transaksi::with('details','details.bukus')->get();
         return response()->json([
             'success' => true,
             'message' => 'Daftar Data Transaksi',
@@ -47,15 +47,9 @@ class TransaksiController extends Controller
         //store book transaction
         //take all data from request
         $data = $request->all();
-
+        $data['user_id'] = auth()->user()->id;
         //validate data
-        $validate = Validator::make($data, [
-            'id_user' => 'required',
-            'id_buku' => 'required',
-            'jumlah' => 'required|numeric',
-            'total_harga' => 'required|numeric',
-            'status' => 'required',
-        ]);
+        $validate = Validator::make($data, Transaksi::$rules);
 
         // if validate fail
         if ($validate->fails()) {
@@ -68,21 +62,24 @@ class TransaksiController extends Controller
 
         // if validate success
         // check if book is available
-        $buku = Buku::find($data['id_buku']);
-        if ($buku->stok < $data['jumlah']) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Stok buku tidak cukup',
-                'data' => null
-            ], 400);
-        }
+        // $buku = Buku::find($data['buku_id']);
+        // if ($buku->stok < $data['jumlah']) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'Stok buku tidak cukup',
+        //         'data' => null
+        //     ], 400);
+        // }
 
         // if book is available
         // update book stock
-        $buku->stok = $buku->stok - $data['jumlah'];
-        $buku->save();
+        // $buku->stok = $buku->stok - $data['jumlah'];
+        // $buku->save();
 
+        $transaksi = Transaksi::create($data);
+        $details = $transaksi->details()->createMany($data['details']);
 
+        return $transaksi;
     }
 
     /**
@@ -94,7 +91,7 @@ class TransaksiController extends Controller
     public function show(Transaksi $transaksi)
     {
         //show 1 transactin by id
-        $transaksi = Transaksi::find($transaksi->id);
+        $transaksi = Transaksi::with('details','details.bukus')->find($transaksi->id);
 
         //if transaction not found
         if (!$transaksi) {

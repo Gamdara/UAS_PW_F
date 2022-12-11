@@ -9,12 +9,18 @@ class Transaksi extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id_user',
-        'tanggal'
+        'user_id',
+        'tanggal',
+        'total'
     ];
 
     public static $rules = [
-        'id_user' => 'required',
-        'tanggal' => 'required',
+        'user_id' => 'required',
+        'tanggal' => 'required|date',
+        'total' => 'required'
     ];
+
+    public function details(){
+        return $this->hasMany(DetailTransaksi::class);
+    }
 }

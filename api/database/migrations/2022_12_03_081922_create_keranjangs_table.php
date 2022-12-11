@@ -14,7 +14,6 @@ return new class extends Migration
     public function up()
     {
         Schema::create('keranjangs', function (Blueprint $table) {
-            $table->id();
             $table->foreignId('buku_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->integer('jumlah');

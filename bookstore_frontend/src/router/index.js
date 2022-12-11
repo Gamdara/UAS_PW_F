@@ -7,6 +7,8 @@ import UserLayout from '../layout/UserLayout.vue'
 import AdminLayout from '../layout/AdminLayout.vue'
 import HelloWorld from '../components/HelloWorld.vue'
 import Genre from '../views/admin/Genres.vue'
+import Penulis from '../views/admin/Penulis.vue'
+import Buku from '../views/admin/Buku.vue'
 
 Vue.use(VueRouter)
 
@@ -26,16 +28,28 @@ const routes = [
   {
     path: '/admin',
     component: AdminLayout,
+    beforeEnter: auth,
     children: [
       {
-        path: '/',
+        path: '/admin/home',
         name: 'AdminHome',
-        component: HelloWorld
+        component: HelloWorld,
+        alias: '/'
       },
       {
         path: '/admin/genre',
         name: 'AdminGenre',
         component: Genre
+      },
+      {
+        path: '/admin/penulis',
+        name: 'AdminPenulis',
+        component: Penulis
+      },
+      {
+        path: '/admin/buku',
+        name: 'AdminBuku',
+        component: Buku
       }
     ]
   },
@@ -43,6 +57,12 @@ const routes = [
     path: '/login',
     name: 'login',
     component: () => import(/* webpackChunkName: "store" */ '../views/LoginView.vue'),
+    beforeEnter: logged
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import(/* webpackChunkName: "store" */ '../views/RegisterView.vue'),
     beforeEnter: logged
   },
   {

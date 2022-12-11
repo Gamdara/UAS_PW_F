@@ -9,14 +9,17 @@ class Keranjang extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id_user',
-        'id_buku',
+        'user_id',
+        'buku_id',
         'jumlah'
     ];
 
     public static $rules = [
-        'id_user' => 'required',
-        'id_buku' => 'required',
+        'buku_id' => 'required',
         'jumlah' => 'required',
     ];
+
+    public function buku(){
+        return $this->belongsTo(Buku::class);
+    }
 }

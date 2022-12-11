@@ -26,8 +26,11 @@ class UserController extends Controller
     public function updateProfile(Request $request)
     {
         $user = auth()->user();
+
+        $data = $request->all();
+        if($request->hasFile('foto')) $data['foto'] = ImageUpload::uploadImage($request, 'foto');
         // validate data user
-        $validate = Validator::make($request->all(), [
+        $validate = Validator::make($data, [
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'required|min:6',
@@ -42,10 +45,11 @@ class UserController extends Controller
                 'data' => $validate->errors()
             ], 400);
         }
-
+        
+        
         // update data user
         $user = User::find($user->id);
-        $user->update($request->all());
+        $user->update($data);
         $user->save();
 
         return response()->json([
