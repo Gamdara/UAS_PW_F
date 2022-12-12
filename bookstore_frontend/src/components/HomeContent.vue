@@ -4,7 +4,7 @@
     <div>
       <v-card outlined class="my-5">
         <v-card-title>Buku Terlaris</v-card-title>
-        <router-link to="/">Selengkapnya>></router-link>
+        <router-link to="/"> Selengkapnya>> </router-link>
         <v-card-subtitle>
           <carousel :loop="false" :center="false" :mouseDrag="true" :stagePadding="5" :autoHeight="true" :nav="false" :autoplay="true" :margin="10" :responsive="{0:{items:2},600:{items:7}}" :rewind="true" :dots="false">
             <v-card v-for="n in 10" :key="n" :loading="loading" class="my-5" max-width="165">
