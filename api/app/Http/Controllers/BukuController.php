@@ -16,7 +16,7 @@ class BukuController extends Controller
     public function index()
     {
         //
-        $data = Buku::with('penulis')->with('genre')->get();
+        $data = Buku::with('penulis')->with('genre')->with('review')->get();
         
         return response([
             'status' => true,

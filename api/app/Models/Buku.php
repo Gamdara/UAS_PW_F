@@ -46,9 +46,9 @@ class Buku extends Model
         return $this->belongsTo(Penulis::class);
     }
 
-    public function rating()
+    public function review()
     {
-        return $this->hasMany(Review::class);
+        return $this->hasMany(Review::class)->get()->avg('rating');
     }
     
 }

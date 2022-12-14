@@ -163,94 +163,64 @@
   </div>
 </template>
 
-<script>
+<script setup>
 /* eslint-disable */
-import client from '@/api/request';
-import { onMounted, reactive, ref } from 'vue';
-export default {
-    name: 'Adminbuku',
-    setup() {
-        const data = ref([])
-        const genres = ref([])
-        const penulis = ref([])
-        
-        const validation = ref([])
-        const isLoading = ref(false)
-        //mounted
-        onMounted(() => {
-            fetchAll()
-            client.get('genre')
-                .then(response => genres.value = response.data.data.map(x=> {return{text: x.nama, value: x.id}}))
-                .catch(error => console.log(error.response.data))
-            client.get('penulis')
-                .then(response => penulis.value = response.data.data.map(x=> {return{text: x.nama, value: x.id}}))
-                .catch(error => console.log(error.response.data))
-        })
+import { onMounted, ref } from 'vue';
+import { useGenreStore } from '@/stores/genre';
+import { computed } from 'vue';
+import { useBukuStore } from '@/stores/buku';
+import { usePenulisStore } from '@/stores/penulis';
 
-        function del(id) {
-            isLoading.value = true
-            client.delete('buku/'+id)
-            .then(() => {
-                isLoading.value = false
-                fetchAll()
-            }).catch(error => {
-                isLoading.value = false
-                console.log(error);
-                validation.value = error.response.data
-            })
-        }
+const store = useBukuStore()
+const storeGenre = useGenreStore()
+const storePenulis = usePenulisStore()
+const validation = ref([])
 
-        function update(data) {
-            isLoading.value = true
-            client.post('buku/'+data.id+'?_method=PUT',data)
-            .then(() => {
-                isLoading.value = false
-                fetchAll()
-            }).catch(error => {
-                isLoading.value = false
-                console.log(error);
-                validation.value = error.response.data
-            })
-        }
+const data = computed(() => store.buku);
+const genres = computed(() => storeGenre.genre.map(x=> {return {text: x.nama, value: x.id}}));
+const penulis = computed(() => storePenulis.penulis.map(x=> {return {text: x.nama, value: x.id}}));
 
-        function fetchAll(){
-            isLoading.value = true
-            client.get('buku')
-            .then(response => {
-                isLoading.value = false
-                data.value = response.data.data
-            })
-            .catch(error => {
-                isLoading.value = false
-                console.log(error.response.data)
-            })
-        }
+const isLoading = ref(false)
 
-        function insert(data){
-            isLoading.value = true
-            console.log(data);
-            client.post('buku',data)
-            .then(response => {
-                isLoading.value = false
-                fetchAll()
-            })
-            .catch(error => {
-                isLoading.value = false
-                console.log(error.response.data)
-            })
-        }
+onMounted(() => {
+    fetchAll()
+    storeGenre.get()
+    storePenulis.get()
+})
 
-        //return
-        return {
-            data,
-            del,
-            insert,
-            update,
-            isLoading,
-            genres,
-            penulis
-        }
-    },
+async function del(id) {
+    isLoading.value = true
+    let res = await store.delete(id) 
+    validation.value = res.data && !res.data.status ? res.data.errors : {}
+    isLoading.value = false
+    fetchAll()
+}
+
+async function update(data) {
+    isLoading.value = true
+    let res = await store.update(data) 
+    validation.value = res.data && !res.data.status ? res.data.errors : {}
+    isLoading.value = false
+    fetchAll()
+}
+
+async function fetchAll(){
+    isLoading.value = true
+    let res = await store.get() 
+    validation.value = res.data && !res.data.status ? res.data.errors : {}
+    isLoading.value = false
+}
+
+async function insert(data){
+    isLoading.value = true
+    let res = await store.insert(data) 
+    validation.value = res.data && !res.data.status ? res.data.errors : {}
+    isLoading.value = false
+    fetchAll()
+}
+</script>
+<script>
+    export default{
     data() {
         return {
             search: null,

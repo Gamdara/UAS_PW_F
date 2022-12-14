@@ -45,7 +45,7 @@
 </style>
 
 <script>
-import { response } from 'express';
+/* eslint-disable */
 
 export default {
     name: 'Profil',
