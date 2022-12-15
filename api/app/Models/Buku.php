@@ -48,7 +48,15 @@ class Buku extends Model
 
     public function review()
     {
-        return $this->hasMany(Review::class)->get()->avg('rating');
+        return $this->hasMany(Review::class);
+    }
+
+    protected $appends = [
+        'rating'
+    ];
+
+    function getRatingAttribute(){
+        return round($this->review->avg('nilai'),1);
     }
     
 }
