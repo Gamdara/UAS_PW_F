@@ -36,9 +36,19 @@ const routes = [
         // beforeEnter: logged
       },
       {
+        path: '/about',
+        name: 'about',
+        component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+      },
+      {
         path: '/profile',
         name: 'profile',
         component: () => import(/* webpackChunkName: "profile" */ '../components/Profil.vue')
+      },
+      {
+        path: '/detail',
+        name: 'detail',
+        component: () => import(/* webpackChunkName: "about" */ '../views/DetailBuku.vue')
       }
     ]
   },

@@ -14,6 +14,10 @@ import { BootstrapVue, IconsPlugin, NavbarPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+import CatCarousel from 'vue-cat-carousel'
+
+Vue.use(CatCarousel)
+
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
