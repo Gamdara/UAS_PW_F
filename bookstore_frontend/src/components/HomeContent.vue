@@ -3,11 +3,17 @@
     <img src="../assets/Main-Banner.jpg" alt="Main Banner Armedia" width="100%">
     <div>
       <v-card outlined class="my-5">
-        <v-card-title>Buku Terlaris</v-card-title>
-        <router-link to="/">Selengkapnya>></router-link>
+        <v-row>
+          <v-col class="py-0">
+            <v-card-title>Buku Terlaris</v-card-title>
+          </v-col>
+          <v-col class="py-0">
+            <router-link to="/" style="text-align: end;">Selengkapnya>></router-link>
+          </v-col>
+        </v-row>
         <v-card-subtitle>
           <carousel :loop="false" :center="false" :mouseDrag="true" :stagePadding="5" :autoHeight="true" :nav="false" :autoplay="true" :margin="10" :responsive="{0:{items:2},600:{items:7}}" :rewind="true" :dots="false">
-            <v-card v-for="n in 10" :key="n" :loading="loading" class="my-5" max-width="165">
+            <v-card v-for="n in 10" :key="n" :loading="loading" class="my-5" max-width="165" to="/detail">
               <template slot="progress">
                 <v-progress-linear color="deep-purple" height="3" indeterminate></v-progress-linear>
               </template>
