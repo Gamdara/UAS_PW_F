@@ -9,7 +9,7 @@
             <v-icon @click="logout">mdi-logout</v-icon>
         </v-app-bar> -->
         <b-navbar toggleable="lg" type="light" class="navbar-dekor">
-            <b-navbar-brand href="#">
+            <b-navbar-brand router-link to="/">
                 <img src="../assets/Armedia-logo.png" alt="logo" width="150px">
             </b-navbar-brand>
 
