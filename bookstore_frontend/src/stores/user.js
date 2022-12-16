@@ -62,6 +62,8 @@ export const useUserStore = defineStore("user",{
                 const data = await client().get('logout')
                 localStorage.removeItem('token')
                 this.$router.push('/login')
+                this.user = {}
+                this.token = null
                 return data.data
             }
             catch (error) {

@@ -4,21 +4,21 @@ import { defineStore } from 'pinia'
 import axios from "axios"
 import client from '@/api/request'
 
-export const useBukuStore = defineStore("buku",{
+export const useTransaksiStore = defineStore("transaksi",{
     state: () => ({
-        buku: [],
+        transaksi: [],
     }),
     getters: {
-        getBuku(state){
-            return state.buku
+        gettransaksi(state){
+            return state.transaksi
         }
     },
     actions: {
         async get() {
             try {
-                const res = await axios.get(client().defaults.baseURL+'bukus')
-                this.buku = res.data.data
-                return this.buku
+                const res = await client().get('transaksi')
+                this.transaksi = res.data.data
+                return this.transaksi
             }
             catch (error) {
                 console.log(error)
@@ -27,7 +27,7 @@ export const useBukuStore = defineStore("buku",{
         },
         async update(data) {
             try {
-                const res = await client().post('buku/'+data.id+'?_method=PUT',data)
+                const res = await client().post('transaksi/'+data.id+'?_method=PUT',data)
                 return res.data
             }
             catch (error) {
@@ -37,17 +37,7 @@ export const useBukuStore = defineStore("buku",{
         },
         async insert(data) {
             try {
-                const res = await client().post('buku',data)
-                return res.data
-            }
-            catch (error) {
-                console.log(error)
-                return error.response
-            }
-        },
-        async addReview(data) {
-            try {
-                const res = await client().post('review',data)
+                const res = await client().post('transaksi',data)
                 return res.data
             }
             catch (error) {
@@ -57,7 +47,7 @@ export const useBukuStore = defineStore("buku",{
         },
         async delete(id) {
             try {
-                const res = await client().delete('buku/'+id)
+                const res = await client().delete('transaksi/'+id)
                 return res.data
             }
             catch (error) {
