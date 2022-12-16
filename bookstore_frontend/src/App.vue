@@ -40,13 +40,9 @@
   </v-app>
 </template>
 
-<script>
+<script setup>
+import { useUserStore } from './stores/user'
 
-export default {
-  name: 'App',
-
-  data: () => ({
-    //
-  })
-}
+const store = useUserStore()
+store.profile()
 </script>

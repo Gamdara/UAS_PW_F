@@ -8,7 +8,7 @@
             <v-card-title>Buku Terlaris</v-card-title>
           </v-col>
           <v-col class="py-0">
-            <router-link to="/" style="text-align: end;">Selengkapnya>></router-link>
+            <router-link to="/" style="text-align: end;"> Selengkapnya>> </router-link>
           </v-col>
         </v-row>
         <v-card-subtitle>

@@ -1,7 +1,8 @@
-import Vue from 'vue'
+import Vue, { markRaw } from 'vue'
 import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
+import { createPinia, PiniaVuePlugin } from 'pinia'
 import vuetify from '@/plugins/vuetify'
 // import 'bootstrap/dist/css/bootstrap.min.css'
 import 'vue-navigation-bar/dist/vue-navigation-bar.css'
@@ -23,12 +24,21 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(NavbarPlugin)
 
+Vue.use(PiniaVuePlugin)
+
 Vue.component('vue-navigation-bar', VueNavigationBar)
 
 Vue.config.productionTip = false
 
+const pinia = createPinia()
+
+pinia.use(({ store }) => {
+  store.$router = markRaw(router)
+})
+
 new Vue({
   router,
   vuetify,
+  pinia,
   render: h => h(App)
 }).$mount('#app')

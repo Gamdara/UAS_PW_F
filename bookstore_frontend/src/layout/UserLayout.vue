@@ -48,16 +48,15 @@
                     <span v-if="auth">
                         <b-nav-item-dropdown left>
                             <template #button-content>
-                                <em>User</em>
+                                <em>{{user.nama}}</em>
                             </template>
-                            <b-dropdown-item href="#">Profile</b-dropdown-item>
-                            <b-dropdown-item href="#">Sign Out</b-dropdown-item>
+                            <b-dropdown-item to="/profile">Profile</b-dropdown-item>
+                            <b-dropdown-item @click="logout">Sign Out</b-dropdown-item>
                         </b-nav-item-dropdown>
                     </span>
                     <span v-else>
                         <v-btn color="blue" dark outlined router-link to="/login"><v-icon>mdi-login-variant</v-icon> MASUK</v-btn>
                     </span>
-
                 </b-navbar-nav>
             </b-collapse>
         </b-navbar>
@@ -94,30 +93,24 @@
     </div>
 </template>
 
-<script>
+<script setup>
 /* eslint-disable */
-import client from '@/api/request'
 import Footer from '@/components/FooterContent.vue'
+import { useUserStore } from '@/stores/user';
+import { computed, ref } from 'vue';
 
-export default {
-    name: 'UserLayout',
-    components: {
-        Footer
-    },
-    data: () => ({
-        drawer: false,
-    }),
-    methods: {
-        logout(){
-            client.get('logout')
-            .then(res=> {
-                localStorage.removeItem('token')
-                this.$router.push('/login')
-            })
-            .catch(err=> console.log(err) )
-        }
-    }
+const store = useUserStore()
+
+const errors = ref({})
+const drawer = ref(false)
+
+const user = computed(() => store.user);
+const auth = computed(() => store.token);
+
+async function logout(){
+    const res = await store.logout()
 }
+
 </script>
 
 <style>

@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-
+Route::get('/bukus', [BukuController::class, 'index']);
 Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify'); // Make sure to keep this as your route name
 Route::get('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 
