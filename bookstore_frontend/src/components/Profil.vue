@@ -1,133 +1,124 @@
 <template>
-    <v-main class="profil" style="height: 100%">
-        <div class="d-flex justify-content-center mt-16">
-            <v-card persistent min-width="400px" elevation="8">
-        <v-card-title class="backgroundhead">
-          <span class="headline"><b>Profil</b></span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-text-field v-model="user.nama" readonly label="Name"></v-text-field>
-            <v-text-field v-model="user.password" readonly label="Username"></v-text-field>
-            <v-text-field v-model="user.email" readonly label="Email"></v-text-field>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" @click="open"> Edit Profile </v-btn>
-        </v-card-actions>
-      </v-card>
-        </div>
-        <v-dialog v-model="dialog" persistent width="400px">
-      <v-card>
-        <v-card-text>
-          <v-container>
-            <v-text-field v-model="userEdit.nama" label="Nama" required></v-text-field>
-            <v-text-field v-model="userEdit.password" label="Password" required></v-text-field>
-            <v-text-field v-model="userEdit.email" label="Email" required></v-text-field>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="cancel"> Cancel </v-btn>
-          <v-btn color="blue darken-1" text @click="simpan"> Save </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom> {{ error_message }} </v-snackbar>
-    </v-main>
+    <div>
+        <v-container fluid fill-height class="posisinya mt-15">
+            <v-row align="center" justify="center" >
+                <v-form ref="form" v-model="valid">
+                    <v-row>
+                        <v-col>
+                            <v-card 
+                            class="mt-6" width="500px" min-height="300px">
+                                <v-row align="center" justify="center" class="mt-n5">
+                                    <v-card append color="success" width="450px" height="50px">
+                                        <v-card-title class="cardTitle pa-0 my-2 justify-center"> {{ cardtitle }} </v-card-title>
+                                    </v-card>
+                                </v-row>
+                                <v-row>
+                                    <v-col class="mt-3 ml-8 mr-4 mb-3" cols="3">
+                                        <v-avatar size="120">
+                                            <v-img v-if="btnEdit == true" :src="preview_foto"></v-img>
+                                        </v-avatar>
+                                        <v-btn v-if="btnEdit == true" x-small @click="onPickFile" class="iconedit ml-15 mt-n8" fab dark color="error">
+                                            <v-icon dark>mdi-image-edit</v-icon>
+                                        </v-btn>
+                                        <input v-if="btnEdit == true" type="file" style="display: none" @change="upload" ref="fileInput">
+                                    </v-col>
+                                  
+                                </v-row>
+                                <v-divider class="mx-4 bold"></v-divider>
+                                <v-row class="my-2 mx-5">                    
+                                    <v-col cols="12" sm="12">
+                                        <v-text-field class="formtxt" v-model="user.nama" label="Name" :readonly="btnEdit == false"></v-text-field>
+                                        <v-text-field class="formtxt" v-model="user.username" label="Username" :readonly="btnEdit == false"></v-text-field>
+                                        <v-text-field class="formtxt" v-model="user.email" label="Email" :readonly="btnEdit == false"></v-text-field>
+                                        <v-text-field class="formtxt"  v-model="user.nohp" label="No Hp" :readonly="btnEdit == false"></v-text-field>
+                                    </v-col>
+                                </v-row>
+                                <v-row v-if="btnEdit == true" class="mx-8 mt-n6 mb-3">
+                                    <v-checkbox v-model="enabled" hide-details class="shrink" ></v-checkbox>
+                                    <v-text-field v-model="newPassword" class="formtxt"  :disabled="!enabled" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'" :type="show ? 'text' : 'password'" @click:append="show = !show" label="Password baru" placeholder="New Password"></v-text-field>
+                                </v-row>
+                                <v-col class="mt-5 ml-10" cols="3">
+                                        <v-row>
+                                            <v-btn class="my-10" v-if="btnEdit == false" @click.stop="btnEdit = !btnEdit" rounded outlined color="danger">
+                                                <v-icon>mdi-pencil</v-icon>
+                                            </v-btn>
+                                        </v-row>
+                                        <v-row>
+                                            <v-btn class="my-5" v-if="btnEdit == true" @click="save" rounded outlined color="success">
+                                                <v-icon>mdi-check-bold</v-icon>
+                                            </v-btn> 
+                                            <v-btn class="my-5" v-if="btnEdit == true" @click="cancel" rounded outlined color="error">
+                                                <v-icon>mdi-close-thick</v-icon>
+                                            </v-btn>
+                                        </v-row>
+                                    </v-col>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                </v-form>
+            </v-row>
+        </v-container>
+        <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom>{{ error_message }}</v-snackbar>
+    </div>
 </template>
 
-<style scoped>
-.backgroundhead {
-  background-color: #d0d0d0;
-}
+<style>
+   
+    .cardTitle{
+        font-family: Akshar;
+        font-size: 30px;
+        color: yellow;
+    }
 </style>
 
 <script>
-/* eslint-disable */
-
-export default {
-    name: 'Profil',
-    data() {
+  export default {
+    name: "Profil",
+    data () {
         return {
+            valid: true,
+            enabled: false,
+            show: false,
             load: false,
             snackbar: false,
             error_message: '',
             color: '',
-            dialog: false,
-            user: {
-                nama: null,
-                password: null,
-                email: null,
-            },
-            userEdit: {
-                nama: null,
-                password: null,
-                email: null,
-            },
-        };
+            btnEdit: false,
+            user: [],
+            url_foto: null,
+            editdata: new FormData,
+            newPassword: null,
+        }
     },
     methods: {
-        readData(){
-            var url = this.$api + "/user/" + localStorage.getItem("id");
-            this.$http
-            .get(url, {
-                headers: {
-                    Authorization: "Bearer " + localStorage.getItem("token"),
-                },
-            })
-            .then((response) => {
-                this.user.nama = response.data.data.nama;
-                this.user.email = response.data.data.password;
-                this.user.email = response.data.data.email;
-            });
+        save() {
+            this.editdata.append('nama',this.user.nama);
+            this.editdata.append('username',this.user.username);
+            this.editdata.append('email',this.user.email);
+            this.editdata.append('nohp',this.user.nohp);
+            this.editdata.append('url_foto_pegawai',this.url_foto);
+            if(!(this.newPassword == null)){
+                this.editdata.append('password',this.newPassword);
+            }
         },
-        cancel() {
+        cancel(){
             this.readData();
-            this.dialog = false;
+            this.btnEdit = false;
+            this.preview_foto = require('@/assets/logo.png');
         },
-        resetForm() {
-            this.form = {
-                nama: null,
-                password: null,
-                email: null,
-            };
+        onPickFile() {
+            this.$refs.fileInput.click();
         },
-        open() {
-            this.dialog = true;
-        },
-        simpan() {
-            let newData = {
-                nama: this.userEdit.nama,
-                password: this.userEdit.password,
-                email: this.userEdit.email,
-            };
-            var url = this.$api + "/updateProfile/" + localStorage.getItem("id");
-            this.load = true;
-            this.$http
-            .put(url, newData, {
-                headers: {
-                    Authorization: "Bearer " + localStorage.getItem("token"),
-                }
-            })
-            .then((response) => {
-                this.error_message = response.data.message;
-                this.color = "green";
-                this.snackbar = true;
-                this.load = false;
-                this.dialog = false;
-            })
-            .catch((error) => {
-                this.error_message = error.response.data.message;
-                this.color = "red";
-                this.snackbar = true;
-                this.load = false;
-            });
-        },
+        upload(event) {
+            let url = event.target.files[0];
+            this.url_foto = url;
+            this.preview_foto = URL.createObjectURL(url);
+        }
     },
-    mounted() {
-        this.readData();
-    },
-};
+    computed: {
+        cardtitle () {
+            return this.btnEdit === false ? 'Profil' : 'Edit Profil'
+        }
+    }
+  }
 </script>
