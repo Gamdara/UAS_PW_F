@@ -34,6 +34,19 @@ export const useUserStore = defineStore("user",{
                 return error.response
             }
         },
+        async register(params) {
+            try {
+                const res = await axios.post('http://127.0.0.1:8000/api/' + "register", params, {
+                    headers: {'Content-Type': 'application/json', 'Content-Type': 'multipart/form-data'},
+                })
+                this.$router.push('/login')
+                return res.data
+            }
+            catch (error) {
+                console.log(error)
+                return error.response
+            }
+        },
         async profile(){
             if(!this.token) return
             try {
