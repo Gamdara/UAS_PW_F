@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/bukus', [BukuController::class, 'index']);
+Route::get('/bukus/{id}', [BukuController::class, 'show']);
+
 Route::get('email/verify/{id}', [VerificationController::class, 'verify'])->name('verification.verify'); // Make sure to keep this as your route name
 Route::get('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 
@@ -33,7 +35,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // show profile auth user
     Route::get('/profile', [UserController::class, 'showProfile']);
     // update profile auth user
-    Route::put('/profile', [UserController::class, 'updateProfile']);
+    Route::post('/profile', [UserController::class, 'updateProfile']);
 
     Route::get('/user', [AuthController::class, 'user']);
     Route::get('/logout', [AuthController::class, 'logout']);

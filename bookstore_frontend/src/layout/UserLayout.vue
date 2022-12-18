@@ -84,16 +84,19 @@
 <script setup>
 /* eslint-disable */
 import Footer from '@/components/FooterContent.vue'
+import { useKeranjangStore } from '@/stores/keranjang';
 import { useUserStore } from '@/stores/user';
 import { computed, ref } from 'vue';
 
 const store = useUserStore()
+const cartStore = useKeranjangStore()
 
 const errors = ref({})
 const drawer = ref(false)
 
 const user = computed(() => store.user);
 const auth = computed(() => store.token);
+const cart = computed(() => cartStore);
 
 async function logout(){
     const res = await store.logout()

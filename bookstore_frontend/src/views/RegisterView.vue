@@ -10,47 +10,39 @@
         <v-text-field label="No Handphone" v-model="user.no_hp" placeholder="Masukkan No Handphone" :error-messages="errors.no_hp" outlined></v-text-field>
         <v-text-field label="Password" type="password" v-model="user.password" placeholder="Masukkan Password" :error-messages="errors.password" outlined></v-text-field>
         <v-file-input v-model="user.foto" :error-messages="errors.foto" placeholder="Upload Foto" label="Upload Foto" outlined show-size dense></v-file-input>
-        <v-btn block :loading="isLoading" @click="login()" outlined color="success">Daftar</v-btn>
+        <v-btn block :loading="isLoading" @click="regist()" outlined color="success">Daftar</v-btn>
         <p class="mt-3 text-center">Sudah Punya Akun? <router-link to="/login">Masuk</router-link></p>
       </v-card>
     </v-container>
   </div>
 </template>
-<script>
-import axios from 'axios'
+<script setup>
 /* eslint-disable */
-export default {
-  name: 'LoginView',
+import { useUserStore } from '@/stores/user';
+import { ref } from 'vue';
 
-  data: () => ({
-    user: {
-      email: '',
-      password: ''
-    },
-    errors: {},
-    isLoading: false
-  }),
+const store = useUserStore()
 
-  methods: {
-    login() {
-      this.isLoading = true
-      axios.post('http://127.0.0.1:8000/api/' + "register", this.user, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-        .then(res => {
-          this.isLoading = false
-          this.$router.push('/login')
-        })
-        .catch(err => {
-          this.isLoading = false;
-          console.log(err);
-          this.errors = err.response.data.errors || {}
-        })
-    }
-  }
+const isLoading = ref(false)
+
+const user = ref({
+  nama: "",
+  username: "",
+  email: "",
+  no_hp: "",
+  password: ""
+})
+
+const errors = ref({})
+
+async function regist(){
+  isLoading.value = true
+  let res = await store.register(user.value) 
+  console.log(res);
+  errors.value = res.errors || {}
+  isLoading.value = false
 }
+
 </script>
 <style>
   .register{

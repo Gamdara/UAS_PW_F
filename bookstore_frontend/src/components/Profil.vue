@@ -2,7 +2,7 @@
     <div>
         <v-container fluid fill-height class="posisinya mt-15">
             <v-row align="center" justify="center" >
-                <v-form ref="form" v-model="valid">
+                <v-form ref="form" >
                     <v-row>
                         <v-col>
                             <v-card class="mt-6" width="500px" min-height="300px">
@@ -14,9 +14,9 @@
                                 <v-row>
                                     <v-col class="mt-3 ml-8 mr-4 mb-3" cols="3">
                                         <v-avatar size="120">
-                                            <v-img v-if="btnEdit == true" :src="preview_foto"></v-img>
+                                            <v-img  :src="preview_foto ? preview_foto : user.foto ? user.foto : '@/assets/logo.png'"></v-img>
                                         </v-avatar>
-                                        <v-btn v-if="btnEdit == true" x-small @click="onPickFile" class="iconedit ml-15 mt-n8" fab dark color="error">
+                                        <v-btn v-if="btnEdit == true" x-small @click="$refs.fileInput.click()" class="iconedit ml-15 mt-n8" fab dark color="error">
                                             <v-icon dark>mdi-image-edit</v-icon>
                                         </v-btn>
                                         <input v-if="btnEdit == true" type="file" style="display: none" @change="upload" ref="fileInput">
@@ -25,10 +25,10 @@
                                 <v-divider class="mx-4 bold"></v-divider>
                                 <v-row class="my-2 mx-5">
                                     <v-col cols="12" sm="12">
-                                        <v-text-field class="formtxt" v-model="user.nama" label="Name" :readonly="btnEdit == false"></v-text-field>
-                                        <v-text-field class="formtxt" v-model="user.username" label="Username" :readonly="btnEdit == false"></v-text-field>
-                                        <v-text-field class="formtxt" v-model="user.email" label="Email" :readonly="btnEdit == false"></v-text-field>
-                                        <v-text-field class="formtxt"  v-model="user.nohp" label="No Hp" :readonly="btnEdit == false"></v-text-field>
+                                        <v-text-field class="formtxt" v-model="user.nama" label="Name" :error-messages="errors.nama" :readonly="btnEdit == false"></v-text-field>
+                                        <v-text-field class="formtxt" v-model="user.username" label="Username" :error-messages="errors.username" :readonly="btnEdit == false"></v-text-field>
+                                        <v-text-field class="formtxt" v-model="user.email" label="Email" :error-messages="errors.email" :readonly="btnEdit == false"></v-text-field>
+                                        <v-text-field class="formtxt"  v-model="user.no_hp" label="No Hp" :error-messages="errors.no_hp" :readonly="btnEdit == false"></v-text-field>
                                     </v-col>
                                 </v-row>
                                 <v-row v-if="btnEdit == true" class="mx-8 mt-n6 mb-3">
@@ -56,10 +56,9 @@
                 </v-form>
             </v-row>
         </v-container>
-        <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom>{{ error_message }}</v-snackbar>
+        <!-- <v-snackbar v-model="snackbar" color="red" timeout="2000" bottom>{{ error_message }}</v-snackbar> -->
     </div>
 </template>
-
 <style>
     .cardTitle{
         font-family: Akshar;
@@ -67,55 +66,52 @@
         color: yellow;
     }
 </style>
+<script setup>
+/* eslint-disable */
+    import { computed, onMounted, ref } from 'vue';
+    import { useUserStore } from '../stores/user';
+    const errors = ref({})
+    const enabled =  ref(false)
+    const preview_foto =  ref()
+    const show = ref(false)
+    const snackbar = ref(false)
+    const btnEdit = ref(false)
+    const url_foto = ref(null)
+    const editdata = ref({})
+    const newPassword = ref(null)
+    const store = useUserStore()
+    const user = computed(() => store.user)
 
-<script>
-export default {
-  name: 'Profil',
-  data () {
-    return {
-      valid: true,
-      enabled: false,
-      show: false,
-      load: false,
-      snackbar: false,
-      error_message: '',
-      color: '',
-      btnEdit: false,
-      user: [],
-      url_foto: null,
-      editdata: new FormData(),
-      newPassword: null
+    async function save() {
+        let res = await store.update(store.user)
+        console.log(res);
+        if(!res.status){
+            errors.value = res.errors || {}
+        }
+        else{
+            errors.value = {}
+            await store.profile()
+            btnEdit.value = false;
+        }
     }
-  },
-  methods: {
-    save () {
-      this.editdata.append('nama', this.user.nama)
-      this.editdata.append('username', this.user.username)
-      this.editdata.append('email', this.user.email)
-      this.editdata.append('nohp', this.user.nohp)
-      this.editdata.append('url_foto_pegawai', this.url_foto)
-      if (!(this.newPassword == null)) {
-        this.editdata.append('password', this.newPassword)
-      }
-    },
-    cancel () {
-      this.readData()
-      this.btnEdit = false
-      this.preview_foto = require('@/assets/logo.png')
-    },
-    onPickFile () {
-      this.$refs.fileInput.click()
-    },
-    upload (event) {
-      const url = event.target.files[0]
-      this.url_foto = url
-      this.preview_foto = URL.createObjectURL(url)
+    async function cancel(){
+        await store.profile()
+        btnEdit.value = false;
+        preview_foto.value = null
+
     }
-  },
-  computed: {
-    cardtitle () {
-      return this.btnEdit === false ? 'Profil' : 'Edit Profil'
+    function upload(event) {
+        let url = event.target.files[0];
+        user.value.foto = url
+        preview_foto.value = URL.createObjectURL(url);
     }
-  }
-}
+
+    const cardtitle = computed(()=> {
+        return btnEdit.value === false ? 'Profil' : 'Edit Profil'
+    })
+
+    onMounted(async () => {
+        await store.profile()
+        console.log(store.user);
+    })
 </script>

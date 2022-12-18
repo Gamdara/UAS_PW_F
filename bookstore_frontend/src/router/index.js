@@ -16,7 +16,6 @@ const routes = [
   {
     path: '/',
     component: UserLayout,
-    // beforeEnter: auth,
     children: [
       {
         path: '/',
@@ -43,10 +42,11 @@ const routes = [
       {
         path: '/profile',
         name: 'profile',
+        beforeEnter: auth,
         component: () => import(/* webpackChunkName: "profile" */ '../components/Profil.vue')
       },
       {
-        path: '/detail',
+        path: '/detail/:id',
         name: 'detail',
         component: () => import(/* webpackChunkName: "about" */ '../views/DetailBuku.vue')
       },

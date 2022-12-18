@@ -4,46 +4,41 @@
         <v-row>
             <v-col cols="3" >
                 <v-card class="p-4 mx-5 mb-5">
-                    <v-img max-width="100%" src="https://cdn.gramedia.com/uploads/items/9786020523316_Melangkah_UV_Spot_R4-1__w150_hauto.jpg"></v-img>
+                    <v-img max-width="100%" :src="buku.cover"></v-img>
                 </v-card>
             </v-col>
             <v-col cols="6">
-                <p class="mb-0" style="font-size: 20px; color: slategray;">Js. Khairen</p>
-                <p class="mb-0" style="font-size: 30px;">Melangkah</p>
+                <p class="mb-0" style="font-size: 20px; color: slategray;">{{buku.penulis?.nama}}</p>
+                <p class="mb-0" style="font-size: 30px;">{{buku.judul}}</p>
                 <v-row>
-                  <v-rating :value="4.5" color="amber" dense half-increments readonly size="14"></v-rating>
+                  <v-rating :value="buku.rating" color="amber" dense half-increments readonly size="14"></v-rating>
 
                   <div class="grey--text ms-4">
-                    4.5 (413)
+                    {{buku.rating}}
                   </div>
                 </v-row>
-                <p class="mt-5 mb-0 font-weight-bold">Deskripsi Buku</p>
+                <!-- <p class="mt-5 mb-0 font-weight-bold">Deskripsi Buku</p>
                 <p>
                     Novel karya J. S Khairen yang berjudul Melangkah bertemakan tentang petualangan di Indonesia.
                     Tidak hanya itu, cerita dalam novel ini juga mengutamakan kisah pahlawan. Berbeda dari karya-karya yang sebelumnya,
                     di novel ini Khairen memberi sedikit imajinasi yang ia tanamkan. Terdapat 36 episode dan 5 babak.
-                </p>
+                </p> -->
                 <p class="mt-5 mb-0 font-weight-bold">Sinopsis</p>
                 <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Nulla ultricies maximus enim, sit amet pharetra tortor ultrices id.
-                    Cras turpis tellus, lobortis quis urna a, suscipit tincidunt sem.
-                    Sed mattis sagittis dignissim. Aenean aliquet at eros sed suscipit.
-                    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-                    Proin auctor scelerisque tincidunt. Nam ut neque eget nulla laoreet vulputate.
-                    Mauris sagittis arcu vel enim efficitur suscipit. Donec ornare, metus ut blandit malesuada,
-                    lectus est tristique orci, sit amet condimentum nunc elit ac lacus. Nam interdum sollicitudin erat,
-                    ac tristique sem sodales ut. Praesent vel commodo sapien. Vivamus dolor augue,
-                    tincidunt non lectus at, commodo egestas urna. Aenean turpis felis, bibendum eget urna eget,
-                    egestas scelerisque ligula. Pellentesque et quam vel turpis semper vestibulum.
-                    In tincidunt purus iaculis, tincidunt felis vel, placerat eros. In vel ante egestas,
-                    pharetra dolor ut, vehicula quam. Aliquam varius sit amet orci quis mollis. Suspendisse
-                    mauris mauris, luctus ut lacus et, condimentum elementum erat. Vivamus est elit, placerat
-                    nec massa at, semper sagittis lacus. Suspendisse blandit fringilla porttitor.
-                    Vivamus sit amet purus et purus molestie mattis a sit amet nibh. Nulla ultrices,
-                    augue vitae convallis laoreet, velit ipsum laoreet mauris, in volutpat lacus eros et massa.
+                    {{buku.sinopsis}}
                 </p>
                 <p class="mt-5 mb-0 font-weight-bold">Detail</p>
+                <p>
+                Genre    : {{buku.genre?.nama}}<br>
+                Halaman  : {{buku.halaman}}<br>
+                Penerbit : {{buku.penerbit}}<br>
+                ISBN     : {{buku.isbn}}<br>
+                Bahasa   : {{buku.bahasa}}<br>
+                Terbit   : {{buku.tgl_terbit}}<br>
+                Stok     :  {{buku.stok}}
+                </p>
+                <v-btn color="success" @click="region=true">Pilih Buku ini</v-btn>
+
                 <v-row class="ms-2">
                   <v-col cols="6">
                     <p>Bahasa : Indonesia</p>
@@ -131,9 +126,77 @@
         </v-dialog>
     </div>
 </template>
-<script>
-import { CatCarousel } from 'vue-cat-carousel'
+<script setup>
 /* eslint-disable */
+import { useBukuStore } from '@/stores/buku';
+import { CatCarousel } from 'vue-cat-carousel'
+/* eslint-disable */import { computed, onMounted, ref } from 'vue';
+import router from '@/router';
+import { useKeranjangStore } from '@/stores/keranjang';
+  const loading = ref(false)
+  const id = computed(() => router.currentRoute.params.id)
+  const store = useBukuStore()
+  const buku = ref({})
+  const data = computed(() => store.buku)
+  const cartStore = useKeranjangStore()
+  const reCartStore = computed(() => cartStore);
+
+  async function fetchBuku () {
+    loading.value = true
+    await store.get() 
+    buku.value =await store.getById(id.value)
+    loading.value = false
+  }
+
+  async function fetchCart () {
+    let res = await cartStore.get() 
+    console.log(res);
+  }
+
+  async function addToChart (buku) {
+    let res = await cartStore.save({ buku_id : buku.id, jumlah : 1 }) 
+    await fetchCart()
+  }
+
+  async function editChart (data) {
+    if(data.jumlah > 0) await cartStore.save(data) 
+    else await cartStore.delete(data.buku_id) 
+    await fetchCart()
+  }
+
+onMounted(async ()=>{
+  fetchBuku()
+  fetchCart()
+})
+
+  const region =  ref(false)
+    pilihBuku: 0,
+    jumlahItem: 0,
+  const items = [
+      {
+        text: 'Home',
+        disabled: false,
+        href: '/'
+      },
+      {
+        text: 'Detail Buku',
+        disabled: false,
+        href: ''
+      }
+    ]
+  const itemCaro = [{ name: 'hans' }, { name: 'sagita' }, { name: 'hans' }, { name: 'sagita' }, { name: 'hans' }, { name: 'sagita' }, { name: 'hans' }, { name: 'sagita' }, { name: 'hans' }, { name: 'sagita' }, { name: 'hans' }, { name: 'sagita' }]
+</script>
+<style>
+.detailBuku{
+    margin: 0 90px;
+}
+@media screen and (max-width: 1316px) {
+  .detailBuku{
+    margin: 0 10px;
+  }
+}
+</style>
+<!-- 
 export default {
   name: 'DetailBuku',
   components: {
@@ -172,15 +235,4 @@ export default {
       this.jumlahItem-=1;
     }
   }
-}
-</script>
-<style>
-.detailBuku{
-    margin: 0 90px;
-}
-@media screen and (max-width: 1316px) {
-  .detailBuku{
-    margin: 0 10px;
-  }
-}
-</style>
+} -->

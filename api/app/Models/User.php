@@ -32,7 +32,7 @@ class User extends Authenticatable implements MustVerifyEmail
         "username" => "required",
         "password" => "required",
         "nama" => "required",
-        "email" => "required|email",
+        'email' => 'required|email|unique:users',
         "no_hp" => "required"
     ];
 

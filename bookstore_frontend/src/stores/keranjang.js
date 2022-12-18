@@ -14,6 +14,9 @@ export const useKeranjangStore = defineStore("keranjang",{
         }
     },
     actions: {
+        findBuku(id){
+            return this.keranjang.find(x => x.buku_id == id)
+        },
         async get() {
             try {
                 const res = await client().get('keranjang')
@@ -25,7 +28,7 @@ export const useKeranjangStore = defineStore("keranjang",{
                 return error.response
             }
         },
-        async insert(data) {
+        async save(data) {
             try {
                 const res = await client().post('keranjang',data)
                 return res.data

@@ -31,7 +31,20 @@ export const useUserStore = defineStore("user",{
             }
             catch (error) {
                 console.log(error)
-                return error.response
+                return error.response.data
+            }
+        },
+        async register(params) {
+            try {
+                const res = await axios.post('http://127.0.0.1:8000/api/' + "register", params, {
+                    headers: {'Content-Type': 'application/json', 'Content-Type': 'multipart/form-data'},
+                })
+                this.$router.push('/login')
+                return res.data
+            }
+            catch (error) {
+                console.log(error)
+                return error.response.data
             }
         },
         async profile(){
@@ -43,18 +56,18 @@ export const useUserStore = defineStore("user",{
             }
             catch (error) {
                 console.log(error)
-                return error.response
+                return error.response.data
             }
         },
-        async update(data){
+        async update(user){
             try {
-                const data = await client().post('profile',data)
+                const data = await client().post('profile',user)
                 this.user = data.data.data
                 return data.data
             }
             catch (error) {
                 console.log(error)
-                return error.response
+                return error.response.data
             }
         },
         async logout() {
@@ -68,7 +81,7 @@ export const useUserStore = defineStore("user",{
             }
             catch (error) {
                 console.log(error)
-                return error.response
+                return error.response.data
             }
         }
     },

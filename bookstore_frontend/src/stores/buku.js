@@ -25,6 +25,16 @@ export const useBukuStore = defineStore("buku",{
                 return error.response
             }
         },
+        async getById(id) {
+            try {
+                const res = await axios.get(client().defaults.baseURL+'bukus/'+id)
+                return res.data.data
+            }
+            catch (error) {
+                console.log(error)
+                return error.response
+            }
+        },
         async update(data) {
             try {
                 const res = await client().post('buku/'+data.id+'?_method=PUT',data)

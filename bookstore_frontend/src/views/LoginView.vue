@@ -10,6 +10,7 @@
         <p class="mt-3 text-center">Belum punya akun? <router-link to="/register">Daftar</router-link></p>
       </v-card>
     </v-container>
+    <v-snackbar v-model="alert.show" :color="alert.color" timeout="2000" bottom>{{ alert.msg }}</v-snackbar>
   </div>
 </template>
 <script setup>
@@ -27,11 +28,14 @@ const user = ref({
 })
 
 const errors = ref({})
+const alert = ref({})
 
 async function login(){
   isLoading.value = true
   let res = await store.login(user.value) 
-  errors.value = res.data.errors || {}
+  console.log(res.message,"awd");
+  alert.value = {color: res.status ? 'green' : 'red', msg: res.message, show:true }
+  errors.value = res.errors || {}
   isLoading.value = false
 }
 
