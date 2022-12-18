@@ -22,10 +22,9 @@
                                         </v-btn>
                                         <input v-if="btnEdit == true" type="file" style="display: none" @change="upload" ref="fileInput">
                                     </v-col>
-                                  
                                 </v-row>
                                 <v-divider class="mx-4 bold"></v-divider>
-                                <v-row class="my-2 mx-5">                    
+                                <v-row class="my-2 mx-5">
                                     <v-col cols="12" sm="12">
                                         <v-text-field class="formtxt" v-model="user.nama" label="Name" :readonly="btnEdit == false"></v-text-field>
                                         <v-text-field class="formtxt" v-model="user.username" label="Username" :readonly="btnEdit == false"></v-text-field>
@@ -96,7 +95,7 @@
             this.editdata.append('username',this.user.username);
             this.editdata.append('email',this.user.email);
             this.editdata.append('nohp',this.user.nohp);
-            this.editdata.append('url_foto_pegawai',this.url_foto);
+            this.editdata.append('url_foto',this.url_foto);
             if(!(this.newPassword == null)){
                 this.editdata.append('password',this.newPassword);
             }
