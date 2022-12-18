@@ -39,7 +39,7 @@ async function regist(){
   isLoading.value = true
   let res = await store.register(user.value) 
   console.log(res);
-  errors.value = res.data.errors || {}
+  errors.value = res.errors || {}
   isLoading.value = false
 }
 

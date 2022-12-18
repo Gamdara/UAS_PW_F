@@ -31,7 +31,7 @@ export const useUserStore = defineStore("user",{
             }
             catch (error) {
                 console.log(error)
-                return error.response
+                return error.response.data
             }
         },
         async register(params) {
@@ -44,7 +44,7 @@ export const useUserStore = defineStore("user",{
             }
             catch (error) {
                 console.log(error)
-                return error.response
+                return error.response.data
             }
         },
         async profile(){
@@ -56,18 +56,18 @@ export const useUserStore = defineStore("user",{
             }
             catch (error) {
                 console.log(error)
-                return error.response
+                return error.response.data
             }
         },
-        async update(data){
+        async update(user){
             try {
-                const data = await client().post('profile',data)
+                const data = await client().post('profile',user)
                 this.user = data.data.data
                 return data.data
             }
             catch (error) {
                 console.log(error)
-                return error.response
+                return error.response.data
             }
         },
         async logout() {
@@ -81,7 +81,7 @@ export const useUserStore = defineStore("user",{
             }
             catch (error) {
                 console.log(error)
-                return error.response
+                return error.response.data
             }
         }
     },

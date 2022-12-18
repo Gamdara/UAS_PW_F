@@ -13,6 +13,7 @@ class Buku extends Model
         'penulis_id',
         'genre_id',
         'judul',
+        'harga',
         'sinopsis',
         'halaman',
         'penerbit',
@@ -26,6 +27,7 @@ class Buku extends Model
     public static $rules = [
         "penulis_id" => "required",
         "genre_id" => "required",
+        'harga' => 'required',
         "judul" => "required",
         "sinopsis" => "required",
         "halaman" => "required",

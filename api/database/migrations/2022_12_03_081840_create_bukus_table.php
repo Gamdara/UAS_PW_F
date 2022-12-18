@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('penulis_id')->constrained()->cascadeOnDelete();
             $table->foreignId('genre_id')->constrained()->cascadeOnDelete();
             $table->string('judul');
+            $table->integer('harga');
             $table->text('sinopsis');
             $table->integer('halaman');
             $table->string('penerbit');
