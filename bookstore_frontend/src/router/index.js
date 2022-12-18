@@ -49,6 +49,16 @@ const routes = [
         path: '/detail',
         name: 'detail',
         component: () => import(/* webpackChunkName: "about" */ '../views/DetailBuku.vue')
+      },
+      {
+        path: '/kategori',
+        name: 'kategori',
+        component: () => import(/* webpackChunkName: "about" */ '../views/KategoriView.vue')
+      },
+      {
+        path: '/tampilList',
+        name: 'tampilList',
+        component: () => import(/* webpackChunkName: "about" */ '../views/TampilList.vue')
       }
     ]
   },

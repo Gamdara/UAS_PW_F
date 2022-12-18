@@ -5,8 +5,7 @@
                 <v-form ref="form" v-model="valid">
                     <v-row>
                         <v-col>
-                            <v-card 
-                            class="mt-6" width="500px" min-height="300px">
+                            <v-card class="mt-6" width="500px" min-height="300px">
                                 <v-row align="center" justify="center" class="mt-n5">
                                     <v-card append color="success" width="450px" height="50px">
                                         <v-card-title class="cardTitle pa-0 my-2 justify-center"> {{ cardtitle }} </v-card-title>
@@ -22,10 +21,9 @@
                                         </v-btn>
                                         <input v-if="btnEdit == true" type="file" style="display: none" @change="upload" ref="fileInput">
                                     </v-col>
-                                  
                                 </v-row>
                                 <v-divider class="mx-4 bold"></v-divider>
-                                <v-row class="my-2 mx-5">                    
+                                <v-row class="my-2 mx-5">
                                     <v-col cols="12" sm="12">
                                         <v-text-field class="formtxt" v-model="user.nama" label="Name" :readonly="btnEdit == false"></v-text-field>
                                         <v-text-field class="formtxt" v-model="user.username" label="Username" :readonly="btnEdit == false"></v-text-field>
@@ -46,7 +44,7 @@
                                         <v-row>
                                             <v-btn class="my-5" v-if="btnEdit == true" @click="save" rounded outlined color="success">
                                                 <v-icon>mdi-check-bold</v-icon>
-                                            </v-btn> 
+                                            </v-btn>
                                             <v-btn class="my-5" v-if="btnEdit == true" @click="cancel" rounded outlined color="error">
                                                 <v-icon>mdi-close-thick</v-icon>
                                             </v-btn>
@@ -63,7 +61,6 @@
 </template>
 
 <style>
-   
     .cardTitle{
         font-family: Akshar;
         font-size: 30px;
@@ -72,53 +69,53 @@
 </style>
 
 <script>
-  export default {
-    name: "Profil",
-    data () {
-        return {
-            valid: true,
-            enabled: false,
-            show: false,
-            load: false,
-            snackbar: false,
-            error_message: '',
-            color: '',
-            btnEdit: false,
-            user: [],
-            url_foto: null,
-            editdata: new FormData,
-            newPassword: null,
-        }
+export default {
+  name: 'Profil',
+  data () {
+    return {
+      valid: true,
+      enabled: false,
+      show: false,
+      load: false,
+      snackbar: false,
+      error_message: '',
+      color: '',
+      btnEdit: false,
+      user: [],
+      url_foto: null,
+      editdata: new FormData(),
+      newPassword: null
+    }
+  },
+  methods: {
+    save () {
+      this.editdata.append('nama', this.user.nama)
+      this.editdata.append('username', this.user.username)
+      this.editdata.append('email', this.user.email)
+      this.editdata.append('nohp', this.user.nohp)
+      this.editdata.append('url_foto_pegawai', this.url_foto)
+      if (!(this.newPassword == null)) {
+        this.editdata.append('password', this.newPassword)
+      }
     },
-    methods: {
-        save() {
-            this.editdata.append('nama',this.user.nama);
-            this.editdata.append('username',this.user.username);
-            this.editdata.append('email',this.user.email);
-            this.editdata.append('nohp',this.user.nohp);
-            this.editdata.append('url_foto_pegawai',this.url_foto);
-            if(!(this.newPassword == null)){
-                this.editdata.append('password',this.newPassword);
-            }
-        },
-        cancel(){
-            this.readData();
-            this.btnEdit = false;
-            this.preview_foto = require('@/assets/logo.png');
-        },
-        onPickFile() {
-            this.$refs.fileInput.click();
-        },
-        upload(event) {
-            let url = event.target.files[0];
-            this.url_foto = url;
-            this.preview_foto = URL.createObjectURL(url);
-        }
+    cancel () {
+      this.readData()
+      this.btnEdit = false
+      this.preview_foto = require('@/assets/logo.png')
     },
-    computed: {
-        cardtitle () {
-            return this.btnEdit === false ? 'Profil' : 'Edit Profil'
-        }
+    onPickFile () {
+      this.$refs.fileInput.click()
+    },
+    upload (event) {
+      const url = event.target.files[0]
+      this.url_foto = url
+      this.preview_foto = URL.createObjectURL(url)
+    }
+  },
+  computed: {
+    cardtitle () {
+      return this.btnEdit === false ? 'Profil' : 'Edit Profil'
     }
   }
+}
 </script>

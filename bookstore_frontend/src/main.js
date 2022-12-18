@@ -15,6 +15,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import CatCarousel from 'vue-cat-carousel'
+import 'animate.css'
 
 Vue.use(CatCarousel)
 

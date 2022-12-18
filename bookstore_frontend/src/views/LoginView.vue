@@ -1,7 +1,7 @@
 <template>
   <div id="background">
     <v-container fill-height fluid>
-      <v-card elevation="2" class="login">
+      <v-card elevation="2" class="login animate__animated animate__fadeInDown">
         <h2 class="text-center " style="font-weight: 900;">MASUK</h2>
         <p class="text-center mb-5">Selamat Datang di <b>Armedia</b>,<br>Toko buku termurah dan terlengkap di Yogyakarta<br>Silakan Masuk untuk melanjutkan...</p>
         <v-text-field label="Username" v-model="user.email" placeholder="Masukkan Username" outlined :error-messages="errors.email"></v-text-field>
@@ -44,13 +44,13 @@ async function login(){
     /* max-width: 550px; */
     /* text-align: center !important; */
     padding: 20px;
-    border: 8px solid rgb(5,111,111);
-    border-radius: 3px;
+    border: 7px solid rgb(5,111,111) !important;
+    background-color: rgb(255, 255, 255, 0.5) !important;
   }
 
   #background {
     background: url(https://img.freepik.com/free-vector/digital-technology-background-with-abstract-wave-border_53876-117508.jpg?w=2000);
-    min-height: 100vh;
+    height: 80vh;
     display: flex !important;
   }
 

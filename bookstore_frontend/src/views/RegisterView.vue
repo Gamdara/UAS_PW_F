@@ -1,7 +1,7 @@
 <template>
   <div id="background">
     <v-container fill-height fluid>
-      <v-card elevation="2" class="mx-auto pa-4 register">
+      <v-card elevation="2" class="mx-auto register animate__animated animate__fadeIn">
         <h2 class="text-center " style="font-weight: 900;">DAFTAR</h2>
         <p class="text-center mb-5">Selamat Datang di <b>Armedia</b>,<br>Toko buku termurah dan terlengkap di Yogyakarta</p>
         <v-text-field label="Nama" v-model="user.nama" placeholder="Masukkan Nama" :error-messages="errors.nama" outlined></v-text-field>
@@ -60,13 +60,13 @@ export default {
     /* max-width: 550px; */
     /* text-align: center !important; */
     padding: 20px;
-    border: 8px solid rgb(5,111,111);
-    border-radius: 3px;
+    border: 7px solid rgb(5,111,111) !important;
+    background-color: rgb(255, 255, 255, 0.5) !important;
   }
 
   #background {
     background: url(https://img.freepik.com/free-vector/digital-technology-background-with-abstract-wave-border_53876-117508.jpg?w=2000);
-    min-height: 92vh;
+    height: 110vh;
     display: flex;
   }
 

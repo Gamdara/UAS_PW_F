@@ -8,6 +8,9 @@
             <v-icon @click="drawer = true">mdi-cart</v-icon>
             <v-icon @click="logout">mdi-logout</v-icon>
         </v-app-bar> -->
+        <b-navbar class="nav-em">
+            <v-icon>mdi-email</v-icon><p class="pt-4 ps-1">armedia.officiall@armedia.com</p>
+        </b-navbar>
         <b-navbar toggleable="lg" type="light" class="navbar-dekor">
             <b-navbar-brand router-link to="/">
                 <img src="../assets/Armedia-logo.png" alt="logo" width="150px">
@@ -64,24 +67,9 @@
         <v-navigation-drawer v-model="drawer" absolute temporary right>
             <!-- nnti jadi shopping cart -->
             <v-list nav dense>
-                <!-- <v-list-item-group
-            v-model="group"
-            active-class="deep-purple--text text--accent-4"
-            >
-            <v-list-item>
-                <v-list-item-icon>
-                <v-icon>mdi-home</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title>Home</v-list-item-title>
-            </v-list-item>
-
-            <v-list-item>
-                <v-list-item-icon>
-                <v-icon>mdi-account</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title>Account</v-list-item-title>
-            </v-list-item>
-            </v-list-item-group> -->
+                <v-card class="text-center">
+                    <v-card-title>Keranjang kosong</v-card-title>
+                </v-card>
             </v-list>
         </v-navigation-drawer>
         <v-main>
@@ -114,6 +102,18 @@ async function logout(){
 </script>
 
 <style>
+.nav-em{
+    height: 25px;
+    background-color: cornflowerblue;
+    font-size: small;
+    justify-content: end !important;
+    padding: 15px 120px !important;
+    position: sticky !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: 0 !important;
+    z-index: 5;
+}
 .navbar-dekor {
     background-color: rgb(245, 245, 245);
     padding-left: 100px !important;
@@ -122,11 +122,14 @@ async function logout(){
     position: sticky !important;
     left: 0 !important;
     right: 0 !important;
-    top: 0 !important;
+    top: 30px !important;
     z-index: 5;
 }
 
 @media screen and (max-width: 1316px) {
+    .nav-em{
+        padding: 15px 60px !important;
+    }
     .navbar-dekor {
         padding-left: 10px !important;
         padding-right: 10px !important;
