@@ -7,6 +7,7 @@ import client from '@/api/request'
 export const useBukuStore = defineStore("buku",{
     state: () => ({
         buku: [],
+        selected: {}
     }),
     getters: {
         getBuku(state){
@@ -28,6 +29,7 @@ export const useBukuStore = defineStore("buku",{
         async getById(id) {
             try {
                 const res = await axios.get(client().defaults.baseURL+'bukus/'+id)
+                this.selected = res.data.data
                 return res.data.data
             }
             catch (error) {

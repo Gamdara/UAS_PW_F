@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::resource('/penulis', PenulisController::class);
 
     Route::resource('/keranjang', KeranjangController::class);
+    Route::delete('/clearkeranjang', [KeranjangController::class, 'destroyAll']);
 
     Route::resource('/transaksi', TransaksiController::class);
 

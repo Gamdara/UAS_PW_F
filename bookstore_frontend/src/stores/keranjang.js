@@ -48,5 +48,15 @@ export const useKeranjangStore = defineStore("keranjang",{
                 return error.response
             }
         },
+        async clear() {
+            try {
+                const res = await client().delete('clearkeranjang')
+                return res.data
+            }
+            catch (error) {
+                console.log(error)
+                return error.response
+            }
+        },
     },
 })

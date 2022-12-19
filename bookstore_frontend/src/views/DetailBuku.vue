@@ -44,7 +44,7 @@
 
                 <v-btn class="mt-4 mb-4" color="success" to="/login" v-if="!userData.nama">Login untuk membeli</v-btn>
                 <v-btn class="mt-4 mb-4" color="success" @click="region=true" v-if="userData.nama && !reCartStore?.findBuku(buku.id)">Pilih Buku ini</v-btn>
-                <v-card v-for="rev in buku.review" :key="rev.user.id">
+                <v-card >
                   <v-card-title>Review</v-card-title>
                   <v-list-item
                     v-if="
@@ -187,8 +187,7 @@ import { useTransaksiStore } from '@/stores/transaksi';
   const loading = ref(false)
   const id = computed(() => router.currentRoute.params.id)
 
-  const buku = ref({})
-
+  
   const review = ref({ nilai: 0, komentar: ""})
   const store = useBukuStore()
   const cartStore = useKeranjangStore()
@@ -196,6 +195,7 @@ import { useTransaksiStore } from '@/stores/transaksi';
   const transaksiStore = useTransaksiStore()
   
   const data = computed(() => store.buku)
+  const buku = computed(() => store.selected)
   const userData = computed(() => userStore.user)
   const reCartStore = computed(() => cartStore);
   const transData = computed(() => transaksiStore.transaksi)
@@ -203,7 +203,7 @@ import { useTransaksiStore } from '@/stores/transaksi';
   async function fetchBuku () {
     loading.value = true
     await store.get() 
-    buku.value =await store.getById(id.value)
+    await store.getById(id.value)
     loading.value = false
   }
 

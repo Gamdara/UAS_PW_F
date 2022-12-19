@@ -122,4 +122,24 @@ class KeranjangController extends Controller
             'data' => null,
         ], 400);
     }
+
+    public function destroyAll()
+    {
+        //
+        $data = Keranjang::where(['user_id' => auth()->user()->id])->delete();
+
+        if($data){
+            return response([
+                'status'=>true,
+                'message' => 'Delete data Success',
+                'data' => $data,
+            ], 200);
+        }
+
+        return response([
+            'status'=>false,
+            'message' => 'Delete data Failed',
+            'data' => null,
+        ], 400);
+    }
 }

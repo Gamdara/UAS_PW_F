@@ -53,7 +53,6 @@
                     reCartStore.findBuku(buku.id).jumlah = $event
                     editChart(reCartStore.findBuku(buku.id))
                     "
-
                     @click:prepend="
                     reCartStore.findBuku(buku.id).jumlah--;
                     editChart(reCartStore.findBuku(buku.id))
