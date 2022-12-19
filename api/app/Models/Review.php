@@ -17,8 +17,7 @@ class Review extends Model
 
     public static $rules = [
         'buku_id' => 'required',
-        'nilai' => 'required',
-        'komentar' => 'required',
+        'nilai' => 'required'
     ];
 
     public function user(){

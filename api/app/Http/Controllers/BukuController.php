@@ -61,7 +61,7 @@ class BukuController extends Controller
     public function show($id)
     {
         //
-        $data = Buku::with('penulis')->with('genre')->find($id);
+        $data = Buku::with(['penulis','genre','review','review.user'])->find($id);
         if(!is_null($data)){
             return response([
                 'status' => true,

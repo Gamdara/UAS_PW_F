@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('buku_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->float('nilai');
-            $table->text('komentar');
+            $table->text('komentar')->nullable();
             $table->timestamps();
         });
     }

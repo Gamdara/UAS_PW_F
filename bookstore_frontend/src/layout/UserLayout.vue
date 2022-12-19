@@ -67,7 +67,10 @@
         <v-navigation-drawer v-model="drawer" absolute temporary right>
             <!-- nnti jadi shopping cart -->
             <v-list nav dense>
-                <v-card class="text-center">
+                <v-card class="text-center" v-if="cart.length < 1">
+                    <v-card-title>Keranjang kosong</v-card-title>
+                </v-card>
+                <v-card class="text-center" v-else>
                     <v-card-title>Keranjang kosong</v-card-title>
                 </v-card>
             </v-list>
@@ -96,7 +99,7 @@ const drawer = ref(false)
 
 const user = computed(() => store.user);
 const auth = computed(() => store.token);
-const cart = computed(() => cartStore);
+const cart = computed(() => cartStore.keranjang);
 
 async function logout(){
     const res = await store.logout()
