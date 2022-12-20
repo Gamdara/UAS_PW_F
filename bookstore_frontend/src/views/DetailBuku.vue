@@ -46,9 +46,12 @@
         <v-btn class="mt-4 mb-4" color="success" @click="region = true"
           v-if="userData.nama && !reCartStore?.findBuku(buku?.id)">Pilih Buku ini</v-btn>
         <v-card>
-          <v-card-title>Review</v-card-title>
-          <!-- <v-list-item v-if="userData.nama && !buku.review.find(x => x.user_id == userData.id)
-            && transData.find(tran => tran.details.some(detail => detail.buku_id === buku?.id))">
+          <v-card-title>Review </v-card-title>
+          <v-list-item v-if="
+            userData.nama
+            && !buku.review.find(x => x.user_id == userData.id)
+            && transData.find(tran => tran.details.some(detail => detail.buku_id == buku.id))
+            ">
             <v-list-item-avatar>
               <v-img alt="Avatar" :src="userData.foto"></v-img>
             </v-list-item-avatar>
@@ -66,7 +69,7 @@
                 <v-btn @click="saveReview">Kirim</v-btn>
               </v-list-item-subtitle>
             </v-list-item-content>
-          </v-list-item> -->
+          </v-list-item>
 
           <!-- review -->
           <v-list three-line>
@@ -211,7 +214,7 @@ async function fetchCart () {
 
 async function fetchTransaksi () {
   let res = await transaksiStore.get() 
-  console.log(res);
+  console.log("transa",res);
 }
 
 async function addToChart(buku) {
