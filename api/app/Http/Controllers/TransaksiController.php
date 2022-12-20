@@ -48,6 +48,7 @@ class TransaksiController extends Controller
         //take all data from request
         $data = $request->all();
         $data['user_id'] = auth()->user()->id;
+        $data['tanggal'] = date('Y-m-d');
         //validate data
         $validate = Validator::make($data, Transaksi::$rules);
 
@@ -79,7 +80,11 @@ class TransaksiController extends Controller
         $transaksi = Transaksi::create($data);
         $details = $transaksi->details()->createMany($data['details']);
 
-        return $transaksi;
+        return response()->json([
+            'success' => true,
+            'message' => 'Daftar Data Transaksi',
+            'data' => $transaksi
+        ], 200);
     }
 
     /**

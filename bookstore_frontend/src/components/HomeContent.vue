@@ -32,9 +32,9 @@
                 <v-row>
                   <v-rating :value="buku.rating" color="amber" dense half-increments readonly size="14"></v-rating>
 
-                  <!-- <div class="grey--text ms-4">
-                    4.5 (413)
-                  </div> -->
+                  <div class="grey--text ms-4">
+                    {{buku.rating}} ({{buku.review?.length}})
+                  </div>
                 </v-row>
               </v-card-text>
 
@@ -45,15 +45,14 @@
                   </v-btn>
                   <v-text-field
                     type="number"
-                    prepend-icon="mdi-map-marker"
-                    append-outer-icon="mdi-map-marker"
+                    prepend-icon="mdi-minus"
+                    append-outer-icon="mdi-plus"
                     v-if="reCartStore.findBuku(buku.id)"
                     :value="reCartStore.findBuku(buku.id).jumlah"
                     @input="
                     reCartStore.findBuku(buku.id).jumlah = $event
                     editChart(reCartStore.findBuku(buku.id))
                     "
-
                     @click:prepend="
                     reCartStore.findBuku(buku.id).jumlah--;
                     editChart(reCartStore.findBuku(buku.id))

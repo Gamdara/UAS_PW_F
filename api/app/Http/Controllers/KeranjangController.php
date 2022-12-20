@@ -43,6 +43,14 @@ class KeranjangController extends Controller
 
         $data = Keranjang::firstOrNew(['user_id' => auth()->user()->id, 'buku_id' => $request->buku_id]);
         $data->jumlah = $request->jumlah;
+
+        if($data->jumlah > $data->buku->stok)
+        return response([
+            'status' => false,
+            'message' => 'Stok tidak cukup',
+            'data' => $data,
+        ], 401);
+
         $data->save();
         
         return response([
@@ -109,6 +117,26 @@ class KeranjangController extends Controller
         }
 
         if($data->delete()){
+            return response([
+                'status'=>true,
+                'message' => 'Delete data Success',
+                'data' => $data,
+            ], 200);
+        }
+
+        return response([
+            'status'=>false,
+            'message' => 'Delete data Failed',
+            'data' => null,
+        ], 400);
+    }
+
+    public function destroyAll()
+    {
+        //
+        $data = Keranjang::where(['user_id' => auth()->user()->id])->delete();
+
+        if($data){
             return response([
                 'status'=>true,
                 'message' => 'Delete data Success',

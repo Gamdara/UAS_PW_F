@@ -20,7 +20,7 @@ export const useUserStore = defineStore("user",{
     actions: {
         async login(params) {
             try {
-                const res = await axios.post('http://127.0.0.1:8000/api/' + "login", params, {
+                const res = await axios.post('https://frederikus.com/api_tubes_pw/public/api/' + "login", params, {
                     headers: {'Content-Type': 'application/json'}
                 })
                 this.token = res.data.token
@@ -36,7 +36,7 @@ export const useUserStore = defineStore("user",{
         },
         async register(params) {
             try {
-                const res = await axios.post('http://127.0.0.1:8000/api/' + "register", params, {
+                const res = await axios.post('https://frederikus.com/api_tubes_pw/public/api/' + "register", params, {
                     headers: {'Content-Type': 'application/json', 'Content-Type': 'multipart/form-data'},
                 })
                 this.$router.push('/login')

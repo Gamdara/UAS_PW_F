@@ -61,7 +61,7 @@ class AuthController extends Controller
         try {
             $validateUser = Validator::make($request->all(),
             [
-                'email' => 'required|email',
+                'email' => 'required',
                 'password' => 'required'
             ]);
 
@@ -72,15 +72,23 @@ class AuthController extends Controller
                     'errors' => $validateUser->errors()
                 ], 401);
             }
+            
+            $user = User::where('email', $request->email)->orWhere('username', $request->email)->first();
 
-            if(!Auth::attempt($request->only(['email', 'password']))){
+            if (is_null($user)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data user tidak ditemukan',
+                ], 401);
+            }
+
+            if(!Auth::attempt(['email' => $user['email'], 'password' => $request->password])){
                 return response()->json([
                     'status' => false,
                     'message' => 'Email atau Password salah',
                 ], 401);
             }
 
-            $user = User::where('email', $request->email)->first();
 
             if (!$user->hasVerifiedEmail()) {
                 return response()->json([

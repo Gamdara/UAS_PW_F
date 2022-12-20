@@ -16,7 +16,6 @@ class Transaksi extends Model
 
     public static $rules = [
         'user_id' => 'required',
-        'tanggal' => 'required|date',
         'total' => 'required'
     ];
 

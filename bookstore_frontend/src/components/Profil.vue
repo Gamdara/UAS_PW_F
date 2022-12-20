@@ -98,7 +98,6 @@
         await store.profile()
         btnEdit.value = false;
         preview_foto.value = null
-
     }
     function upload(event) {
         let url = event.target.files[0];
