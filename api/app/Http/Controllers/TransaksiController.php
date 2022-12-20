@@ -6,6 +6,7 @@ use App\Models\Buku;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\DetailTransaksi;
 use Illuminate\Support\Facades\Validator;
 
 class TransaksiController extends Controller
@@ -79,6 +80,10 @@ class TransaksiController extends Controller
 
         $transaksi = Transaksi::create($data);
         $details = $transaksi->details()->createMany($data['details']);
+
+        foreach ($details as $idx => $detail) {
+            Buku::find($detail['buku_id'])->update('stok', 'stok - '.$detail['jumlah']);
+        }
 
         return response()->json([
             'success' => true,

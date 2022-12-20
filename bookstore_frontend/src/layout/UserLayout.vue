@@ -191,16 +191,13 @@ async function editChart (data) {
 }
 
 async function addTransaksi () {
-    // console.log("trawdawda",{
-    //     details : cartStore.keranjang.map(x => {return {...x, subtotal : x.buku.harga * x.jumlah} }),
-    //     total : cartStore.keranjang.reduce((total,x) => total + (x.jumlah * x.buku.harga),0)
-    // });
     await tranStore.insert({
         details : cartStore.keranjang.map(x => {return {...x, subtotal : x.buku.harga * x.jumlah} }),
         total : cartStore.keranjang.reduce((total,x) => total + (x.jumlah * x.buku.harga),0)
     }) 
     await cartStore.clear()
     await cartStore.get()
+    await tranStore.get()
 }
 
 onMounted(async () => {

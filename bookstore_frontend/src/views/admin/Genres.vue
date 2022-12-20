@@ -1,10 +1,11 @@
 <template>
   <div>
-    <v-card class="mt-4">
+    <v-card class="mt-4" id="card">
         <v-card-title>
             <v-list-item-title class="headline">Genres </v-list-item-title>
         </v-card-title>
         <v-data-table
+            id="content"
             :headers="headers"
             :items="data"
             :search="search"
@@ -25,6 +26,7 @@
                     </v-col>
                     <v-col cols="1">
                         <v-btn fab small color="primary" dark @click="dialog = true; toInsert = true; resetForm()"> <v-icon>mdi-plus</v-icon> </v-btn>
+                        <v-btn fab small color="green" dark @click="exportToPDF"> <v-icon>mdi-file</v-icon> </v-btn>
                     </v-col>
                 </v-row>
             </template>
@@ -137,6 +139,7 @@ async function insert(data){
 }
 </script>
 <script>
+import html2pdf from "html2pdf.js";
     export default{
     data() {
         return {
@@ -174,6 +177,12 @@ async function insert(data){
         setEditItem(){
             this.toInsert=false;
             this.formContent = {...this.itemContent}
+        },
+        exportToPDF() {
+            html2pdf(document.getElementById("card"), {
+                margin: 4,
+                filename: "Daftar Genre.pdf",
+            });
         }
     }
     }

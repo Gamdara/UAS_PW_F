@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="mt-4">
+    <v-card class="mt-4" id="card">
         <v-card-title>
             <v-list-item-title class="headline">Buku </v-list-item-title>
         </v-card-title>
@@ -13,6 +13,7 @@
             :loading="isLoading"
             loading-text="Loading..."
             show-expand
+            id="content"
         >
             <template v-slot:top>
                 <v-row>
@@ -26,6 +27,7 @@
                     </v-col>
                     <v-col cols="1">
                         <v-btn fab small color="primary" dark @click="dialog = true; toInsert = true; resetForm()"> <v-icon>mdi-plus</v-icon> </v-btn>
+                        <v-btn fab small color="green" dark @click="exportToPDF"> <v-icon>mdi-file</v-icon> </v-btn>
                     </v-col>
                 </v-row>
             </template>
@@ -219,8 +221,12 @@ async function insert(data){
     isLoading.value = false
     fetchAll()
 }
+
+
+
 </script>
 <script>
+import html2pdf from "html2pdf.js";
     export default{
     data() {
         return {
@@ -265,6 +271,12 @@ async function insert(data){
             this.toInsert=false;
             this.formContent = {...this.itemContent}
 
+        },
+        exportToPDF() {
+            html2pdf(document.getElementById("card"), {
+                margin: 4,
+                filename: "Daftar Buku.pdf",
+            });
         }
     }
 }
