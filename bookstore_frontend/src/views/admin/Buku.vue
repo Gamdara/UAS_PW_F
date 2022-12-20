@@ -8,7 +8,8 @@
             :headers="headers"
             :items="data"
             :search="search"
-            item-key="name"
+            :expanded.sync="expanded"
+            item-key="id"
             class="elevation-1"
             :loading="isLoading"
             loading-text="Loading..."
@@ -57,6 +58,7 @@
                     <v-row class="pa-2">
                         <v-col cols="4">
                             <v-img
+                            width="70px" height="100px"
                             contain
                             max-height="250"
                             :src="item.cover"
@@ -233,6 +235,7 @@ import html2pdf from "html2pdf.js";
             search: null,
             dialog: false,
             timeout: 1000,
+            expanded: [],
             toInsert: true,
             itemContent: [],
             confirm: false,

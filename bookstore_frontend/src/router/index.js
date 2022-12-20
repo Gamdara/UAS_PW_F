@@ -52,9 +52,9 @@ const routes = [
         component: () => import(/* webpackChunkName: "about" */ '../views/DetailBuku.vue')
       },
       {
-        path: '/kategori',
-        name: 'kategori',
-        component: () => import(/* webpackChunkName: "about" */ '../views/KategoriView.vue')
+        path: '/histori',
+        name: 'histori',
+        component: () => import(/* webpackChunkName: "about" */ '../views/RiwayatTransaksi.vue')
       },
       {
         path: '/tampilList',

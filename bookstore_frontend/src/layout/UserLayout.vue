@@ -155,12 +155,14 @@
               </v-card-action>
             </v-card>
         </v-dialog>
+        <v-snackbar v-model="alert.show" :color="alert.color" timeout="2000" bottom>{{ alert.msg }}</v-snackbar>
     </div>
 </template>
 
 <script setup>
 /* eslint-disable */
 import Footer from '@/components/FooterContent.vue'
+import { useBukuStore } from '@/stores/buku';
 import { useKeranjangStore } from '@/stores/keranjang';
 import { useTransaksiStore } from '@/stores/transaksi';
 import { useUserStore } from '@/stores/user';
@@ -169,10 +171,12 @@ import { computed, onMounted, ref } from 'vue';
 const store = useUserStore()
 const cartStore = useKeranjangStore()
 const tranStore = useTransaksiStore()
+const bukuStore = useBukuStore()
 
 const dialog = ref(false)
 const errors = ref({})
 const drawer = ref(false)
+const alert = ref({})
 
 const user = computed(() => store.user);
 const auth = computed(() => store.token);
@@ -188,6 +192,11 @@ async function logout(){
 }
 
 async function editChart (data) {
+    if(data.jumlah > data.buku.stok) {
+        alert.value = {color: 'red', msg: "Stok tidak cukup", show:true }
+        data.jumlah = data.buku.stok
+        return
+    }
     if(data.jumlah > 0) await cartStore.save(data) 
     else await cartStore.delete(data.buku_id) 
     await cartStore.get()
@@ -201,6 +210,8 @@ async function addTransaksi () {
     await cartStore.clear()
     await cartStore.get()
     await tranStore.get()
+    await bukuStore.get()
+    await bukuStore.getById(bukuStore.selected.id)
 }
 
 onMounted(async () => {

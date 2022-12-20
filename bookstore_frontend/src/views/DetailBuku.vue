@@ -54,15 +54,16 @@
           </v-col>
         </v-row>
 
-        <v-btn class="mt-4 mb-4" color="success" to="/login" v-if="!userData.nama" outlined>Login untuk membeli</v-btn>
+        <v-btn class="mt-4 mb-4" color="success" to="/login" v-if="buku.stok > 0 && !userData.nama" outlined>Login untuk membeli</v-btn>
         <v-btn class="mt-4 mb-4" color="success" @click="region = true"
-          v-if="userData.nama && !reCartStore?.findBuku(buku?.id)">Pilih Buku ini</v-btn>
+          v-if="buku.stok > 0 && userData.nama && !reCartStore?.findBuku(buku?.id)">Pilih Buku ini</v-btn>
         <v-card>
           <v-card-title>Review </v-card-title>
           <v-list-item v-if="
-            userData.nama
+            showEdit ||
+            (userData.nama
             && !buku.review.find(x => x.user_id == userData.id)
-            && transData.find(tran => tran.details.some(detail => detail.buku_id == buku.id))
+            && transData.find(tran => tran.details.some(detail => detail.buku_id == buku.id)))
             ">
             <v-list-item-avatar>
               <v-img alt="Avatar" :src="userData.foto"></v-img>
@@ -78,7 +79,7 @@
               <v-list-item-subtitle>
                 <v-text-field label="Komentar" placeholder="Tulis Reviewmu tentang buku ini disini..."
                   v-model="review.komentar"></v-text-field>
-                <v-btn @click="saveReview">Kirim</v-btn>
+                <v-btn @click="showEdit = false; saveReview()">Kirim</v-btn>
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -95,14 +96,20 @@
                   </v-list-item-avatar>
 
                   <v-list-item-content>
-                    <v-list-item-subtitle v-html="rev.user.nama"></v-list-item-subtitle>
-                    <v-list-item-subtitle>
-                      <div class="d-flex flex-row">
-                        <v-rating v-model="rev.nilai" color="amber" dense half-increments size="14"></v-rating>
-                        <div class="grey--text ms-4">{{ rev.nilai }}</div>
-                      </div>
-                    </v-list-item-subtitle>
-                    <v-list-item-title v-html="rev.komentar"></v-list-item-title>
+                        <v-list-item-subtitle >
+                          {{ rev.user.nama }}
+                          <span v-if="rev.user_id == userData.id" class="float-right">
+                              <v-icon small @click="review = {...rev}; showEdit = true">mdi-pencil</v-icon>
+                              <v-icon small @click="deleteReview">mdi-delete</v-icon>
+                          </span>
+                        </v-list-item-subtitle>
+                          <v-list-item-subtitle>
+                            <div class="d-flex flex-row">
+                              <v-rating v-model="rev.nilai" color="amber" dense half-increments size="14"></v-rating>
+                              <div class="grey--text ms-4">{{ rev.nilai }}</div>
+                            </div>
+                          </v-list-item-subtitle>
+                          <v-list-item-title v-html="rev.komentar"></v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </div>
@@ -188,6 +195,7 @@
         </v-card-action>
       </v-card>
     </v-dialog>
+    <v-snackbar v-model="alert.show" :color="alert.color" timeout="2000" bottom>{{ alert.msg }}</v-snackbar>
   </div>
 </template>
 <script setup>
@@ -200,6 +208,7 @@ import { useKeranjangStore } from '@/stores/keranjang';
 import { useUserStore } from '../stores/user';
 import { useTransaksiStore } from '@/stores/transaksi';
 const loading = ref(false)
+const showEdit = ref(false)
 const id = computed(() => router.currentRoute.params.id)
 
 
@@ -214,6 +223,7 @@ const buku = computed(() => store.selected)
 const userData = computed(() => userStore.user)
 const reCartStore = computed(() => cartStore);
 const transData = computed(() => transaksiStore.transaksi)
+const alert = ref({})
 
 //formater
 const formater = new Intl.NumberFormat("id-ID", { style: "currency", currency : "IDR", minimumFractionDigits: 0 })
@@ -241,6 +251,11 @@ async function addToChart(buku) {
 }
 
 async function editChart(data) {
+  if(data.jumlah > data.buku.stok) {
+        alert.value = {color: 'red', msg: "Stok tidak cukup", show:true }
+        data.jumlah = data.buku.stok
+        return
+    }
   if (data.jumlah > 0) await cartStore.save(data)
   else await cartStore.delete(data.buku_id)
   await fetchCart()
@@ -248,6 +263,11 @@ async function editChart(data) {
 
 async function saveReview() {
   await store.addReview({ ...review.value, buku_id: buku?.value.id })
+  await fetchBuku()
+}
+
+async function deleteReview() {
+  await store.deleteReview(id.value)
   await fetchBuku()
 }
 

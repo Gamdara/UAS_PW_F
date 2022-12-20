@@ -80,6 +80,7 @@
         </v-card-subtitle>
       </v-card>
     </div>
+    <v-snackbar v-model="alert.show" :color="alert.color" timeout="2000" bottom>{{ alert.msg }}</v-snackbar>
   </div>
 </template>
 <script setup>
@@ -94,6 +95,7 @@ import carousel from 'vue-owl-carousel'
   const data = computed(() => store.buku);
   const cartStore = useKeranjangStore()
   const reCartStore = computed(() => cartStore);
+  const alert = ref({})
 
   //formater
 const formater = new Intl.NumberFormat("id-ID", { style: "currency", currency : "IDR", minimumFractionDigits: 0 })
@@ -120,6 +122,11 @@ const formater = new Intl.NumberFormat("id-ID", { style: "currency", currency : 
   }
 
   async function editChart (data) {
+    if(data.jumlah > data.buku.stok) {
+        alert.value = {color: 'red', msg: "Stok tidak cukup", show:true }
+        data.jumlah = data.buku.stok
+        return
+    }
     if(data.jumlah > 0) await cartStore.save(data) 
     else await cartStore.delete(data.buku_id) 
     await fetchCart()

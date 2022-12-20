@@ -1,36 +1,90 @@
 <template>
-    <v-main class="list">
-        <h3 class="text-h3 font-weight-medium mb-5"> Riwayat Pembelian </h3>
-        
-        <v-card>
-            <v-card-title>
-                <v-text-field
-                    v-model="search"
-                    append-icon="mdi-magnify"
-                    label="Search"
-                    single-line
-                    hide-details>
-                </v-text-field>
-                <v-spacer></v-spacer>
-            </v-card-title>
-  
-            <v-data-table :headers="headers" :items="riwayats" :search="search" > 
-              <template v-slot:[`item.image`]="{ item }">
-                  <img :src="item.image">
-              </template>
-              </v-data-table> 
-  
-        </v-card> 
-  
-        <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom>{{ error_message }}</v-snackbar>
-    </v-main> 
+    <v-container fluid>
+    <div class="list">
+        <v-card class="mt-4" id="card">
+        <v-card-title>
+            <v-list-item-title class="headline">Transaksi </v-list-item-title>
+        </v-card-title>
+        <v-data-table
+            id="content"
+            :headers="headers"
+            :items="data"
+            :search="search"
+            :expanded.sync="expanded"
+            item-key="id"
+            class="elevation-1"
+            show-expand
+            :loading="isLoading"
+            loading-text="Loading..."
+        >
+            <template v-slot:top>
+                <v-row>
+                    <v-col cols="11">
+                        <v-text-field
+                        append-icon="mdi-magnify"
+                        v-model="search"
+                        label="Search"
+                        class="mx-4"
+                        ></v-text-field>
+                    </v-col>
+                </v-row>
+            </template>
+            <template v-slot:expanded-item="{ headers,item }">
+            <td :colspan="headers.length">
+                <!-- {{ item.details }} -->
+                <v-list nav dense>
+                    <template>
+                        <div v-for="(detail, i) in item.details" :key="i">
+                            <v-list-item >
+                                <v-list-item-avatar class="ms-2" style="border-radius:0px" width="70px" height="100px">
+                                    <v-img :src="detail.bukus.cover"></v-img>
+                                </v-list-item-avatar>
+                                <v-list-item-content>
+                                <v-list-item-subtitle>Judul : {{ detail.bukus.judul }}</v-list-item-subtitle>
+                                <v-list-item-title > Subtotal : {{ detail.subtotal  }}</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                            <v-divider class="m-0"></v-divider>
+                        </div>
+                    </template>
+                </v-list>
+            </td></template>
+        </v-data-table>
+    </v-card>
+    </div>
+</v-container>
 </template>
+<script setup>
+/* eslint-disable */
+import { onMounted, ref } from 'vue';
+import { useGenreStore } from '@/stores/genre';
+import { computed } from 'vue';
+import { useTransaksiStore } from '@/stores/transaksi';
+
+const store = useTransaksiStore()
+const validation = ref([])
+
+const data = computed(() => store.transaksi);
+const isLoading = ref(false)
+
+async function fetchAll(){
+    isLoading.value = true
+    let res = await store.get() 
+    validation.value = res.data && !res.data.status ? res.data.errors : {}
+    isLoading.value = false
+}
+
+onMounted(() => {
+    fetchAll()
+})
+</script>
 <script>
 /* eslint-disable */
   export default {
     name: "ListBuku",
     data() { 
         return {
+            expanded: [],
             load: false,
             url: null,
             image: null,
@@ -40,13 +94,8 @@
             search: null, 
             dialog: false, 
             headers: [
-                { text: "Kode", align: "start", sortable: true, value: "kode"},
-                { text: "Tanggal", value: "tanggal" },
+                { text: "Tanggal",sortable: true, value: "tanggal" },
                 { text: "Total", value: "total"},
-                { text: "Cover Buku", value: "image" },
-                { text: "Judul", value: "judul" },
-                { text: "Jumlah Beli", value:"jumlah"},
-                { text: "Subtotal", value:"subtotal"},
             ],
             riwayats: [
               { 
@@ -70,28 +119,6 @@
             },
         };
     },
-    methods: { 
-      Preview_image() {
-        this.url= URL.createObjectURL(this.image)
-      },
-        readData() {
-            var url = this.$api + '/riwayat';
-            this.$http.get(url, {
-                headers:{
-                    'Authorization' : 'Bearer ' + localStorage.getItem('token')
-                }
-            }).then(response => {
-                this.courses = response.data.data;
-            })
-        },
-    },
-    computed: {
-        formTitle() {
-            return this.inputType;
-        },
-    },
-    mounted() {
-        this.readData();
-    },
+    
   };
 </script>

@@ -67,6 +67,16 @@ export const useBukuStore = defineStore("buku",{
                 return error.response
             }
         },
+        async deleteReview(id) {
+            try {
+                const res = await client().delete('review/'+id)
+                return res.data
+            }
+            catch (error) {
+                console.log(error)
+                return error.response
+            }
+        },
         async delete(id) {
             try {
                 const res = await client().delete('buku/'+id)
