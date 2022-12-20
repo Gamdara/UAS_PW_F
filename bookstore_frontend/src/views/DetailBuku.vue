@@ -26,29 +26,29 @@
                 </p> -->
         <p class="mt-5 mb-0 font-weight-bold">Sinopsis</p>
         <p>
-          {{ buku.sinopsis }}
+          {{ buku?.sinopsis }}
         </p>
         <p class="mt-5 mb-0 font-weight-bold">Detail</p>
         <v-row class="ms-2">
           <v-col cols="6">
-            <p>Bahasa : {{ buku.bahasa }}</p>
-            <p>Jumlah Halaman : {{ buku.halaman }}</p>
-            <p>Genre : {{ buku.genre?.nama }}</p>
+            <p>Bahasa : {{ buku?.bahasa }}</p>
+            <p>Jumlah Halaman : {{ buku?.halaman }}</p>
+            <p>Genre : {{ buku?.genre?.nama }}</p>
           </v-col>
           <v-col cols="6">
-            <p>Penulis : {{ buku.penulis?.nama }}</p>
-            <p>Penerbit : {{ buku.penerbit }}</p>
-            <p>Tanggal Terbit : {{ buku.tgl_terbit }}</p>
+            <p>Penulis : {{ buku?.penulis?.nama }}</p>
+            <p>Penerbit : {{ buku?.penerbit }}</p>
+            <p>Tanggal Terbit : {{ buku?.tgl_terbit }}</p>
           </v-col>
         </v-row>
 
         <v-btn class="mt-4 mb-4" color="success" to="/login" v-if="!userData.nama">Login untuk membeli</v-btn>
         <v-btn class="mt-4 mb-4" color="success" @click="region = true"
-          v-if="userData.nama && !reCartStore?.findBuku(buku.id)">Pilih Buku ini</v-btn>
+          v-if="userData.nama && !reCartStore?.findBuku(buku?.id)">Pilih Buku ini</v-btn>
         <v-card>
           <v-card-title>Review</v-card-title>
-          <v-list-item v-if="userData.nama && !buku.review.find(x => x.user_id == userData.id)
-            && transData.find(tran => tran.details.some(detail => detail.buku_id === buku.id))">
+          <v-list-item v-if="userData.nama && !buku?.review.find(x => x.user_id == userData.id)
+            && transData.find(tran => tran.details.some(detail => detail.buku_id === buku?.id))">
             <v-list-item-avatar>
               <v-img alt="Avatar" :src="userData.foto"></v-img>
             </v-list-item-avatar>
@@ -71,10 +71,10 @@
           <!-- review -->
           <v-list three-line>
             <template>
-              <div v-for="(rev, i) in buku.review" :key="i">
-                <v-divider v-if="i > 0"></v-divider>
+              <div v-for="(rev, i) in buku?.review" :key="i">
+                <v-divider v-if="i > 0" :key="i"></v-divider>
 
-                <v-list-item>
+                <v-list-item >
                   <v-list-item-avatar>
                     <v-img :src="rev.user.foto"></v-img>
                   </v-list-item-avatar>
@@ -100,128 +100,35 @@
         <v-card>
           <v-card-title class="py-3">Pembelian</v-card-title>
           <v-divider class="m-0" style="border-color: black;"></v-divider>
-          <span v-if="!reCartStore?.findBuku(buku.id)">
+          <span v-if="!reCartStore?.findBuku(buku?.id)">
             <v-card-subtitle class="py-2 text-center">---Belum ada pembelian---</v-card-subtitle>
           </span>
           <span v-else>
-            <v-card-text style="font-size: 20px;">{{ buku.judul }}
+            <v-card-text style="font-size: 20px;">{{ buku?.judul }}
               <v-spacer></v-spacer>
               <v-btn class="mx-2" fab dark x-small color="primary" elevation="1" @click="
-                reCartStore.findBuku(buku.id).jumlah--; editChart(reCartStore.findBuku(buku.id))">
+                reCartStore.findBuku(buku?.id).jumlah--; editChart(reCartStore.findBuku(buku?.id))">
                 <v-icon>mdi-minus</v-icon>
               </v-btn>
-              {{ reCartStore?.findBuku(buku.id).jumlah }}
+              {{ reCartStore?.findBuku(buku?.id).jumlah }}
               <v-btn class="mx-2" fab dark x-small color="primary" elevation="1" @click="
-                reCartStore.findBuku(buku.id).jumlah++; editChart(reCartStore.findBuku(buku.id))">
+                reCartStore.findBuku(buku?.id).jumlah++; editChart(reCartStore.findBuku(buku?.id))">
                 <v-icon>mdi-plus</v-icon>
               </v-btn>
             </v-card-text>
+            <v-divider class="m-0" style="border-color: black;"></v-divider>
+            <v-card-text style="font-size: 15px;">
+              Total Harga : Rp {{ buku?.harga * reCartStore.findBuku(buku?.id).jumlah }}
+            </v-card-text>
+            <v-divider class="m-0" style="border-color: black;"></v-divider>
+            <v-card-action>
+              <v-btn color="blue darken-1" text outlined> Keranjang </v-btn>
+              <v-btn color="blue darken-1" text > Bayar </v-btn>
+            </v-card-action>
           </span>
         </v-card>
       </v-col>
     </v-row>
-    <p class="mt-5 mb-0 font-weight-bold">Sinopsis</p>
-    <p>
-      {{ buku?.sinopsis }}
-    </p>
-    <p class="mt-5 mb-0 font-weight-bold">Detail</p>
-    <v-row class="ms-2">
-      <v-col cols="6">
-        <p>Bahasa : {{ buku?.bahasa }}</p>
-        <p>Jumlah Halaman : {{ buku?.halaman }}</p>
-        <p>Genre : {{ buku?.genre?.nama }}</p>
-      </v-col>
-      <v-col cols="6">
-        <p>Penulis : {{ buku?.penulis?.nama }}</p>
-        <p>Penerbit : {{ buku?.penerbit }}</p>
-        <p>Tanggal Terbit : {{ buku?.tgl_terbit }}</p>
-      </v-col>
-    </v-row>
-
-    <v-btn class="mt-4 mb-4" color="success" to="/login" v-if="!userData.nama">Login untuk membeli</v-btn>
-    <v-btn class="mt-4 mb-4" color="success" @click="region = true"
-      v-if="userData.nama && !reCartStore?.findBuku(buku?.id)">Pilih Buku ini</v-btn>
-    <v-card>
-      <v-card-title>Review</v-card-title>
-      <v-list-item v-if="userData.nama && !buku?.review.find(x => x.user_id == userData.id)
-      && transData.find(tran => tran.details.some(detail => detail.buku_id === buku?.id))">
-        <v-list-item-avatar>
-          <v-img alt="Avatar" :src="userData.foto"></v-img>
-        </v-list-item-avatar>
-
-        <v-list-item-content>
-          <v-list-item-title>
-            <div class="d-flex flex-row">
-              <v-rating v-model="review.nilai" color="amber" dense half-increments size="14"></v-rating>
-              <div class="grey--text ms-4">{{ review.nilai }}</div>
-            </div>
-          </v-list-item-title>
-          <v-list-item-subtitle>
-            <v-text-field label="Komentar" placeholder="Tulis Reviewmu tentang buku ini disini..."
-              v-model="review.komentar"></v-text-field>
-            <v-btn @click="saveReview">Kirim</v-btn>
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-
-      <!-- review -->
-      <v-list three-line>
-        <template>
-          <div v-for="(rev, i) in buku?.review" :key="i">
-            <v-divider v-if="i > 0" :key="i"></v-divider>
-            <v-list-item>
-              <v-list-item-avatar>
-                <v-img :src="rev.user.foto"></v-img>
-              </v-list-item-avatar>
-
-              <v-list-item-content>
-                <v-list-item-subtitle v-html="rev.user.username"></v-list-item-subtitle>
-                <v-list-item-subtitle>
-                  <div class="d-flex flex-row">
-                    <v-rating v-model="rev.nilai" color="amber" dense half-increments size="14"></v-rating>
-                    <div class="grey--text ms-4">{{ rev.nilai }}</div>
-                  </div>
-                </v-list-item-subtitle>
-                <v-list-item-title v-html="rev.komentar"></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </div>
-        </template>
-      </v-list>
-
-    </v-card>
-    <v-col cols="3">
-      <v-card>
-        <v-card-title class="py-3">Pembelian</v-card-title>
-        <v-divider class="m-0" style="border-color: black;"></v-divider>
-        <span v-if="!reCartStore?.findBuku(buku?.id)">
-          <v-card-subtitle class="py-2 text-center">---Belum ada pembelian---</v-card-subtitle>
-        </span>
-        <span v-else>
-          <v-card-text style="font-size: 20px;">{{ buku?.judul }}
-            <v-spacer></v-spacer>
-            <v-btn class="mx-2" fab dark x-small color="primary" elevation="1" @click="
-            reCartStore.findBuku(buku?.id).jumlah--; editChart(reCartStore.findBuku(buku?.id))">
-              <v-icon>mdi-minus</v-icon>
-            </v-btn>
-            {{ reCartStore?.findBuku(buku?.id).jumlah }}
-            <v-btn class="mx-2" fab dark x-small color="primary" elevation="1" @click="
-            reCartStore.findBuku(buku?.id).jumlah++; editChart(reCartStore.findBuku(buku?.id))">
-              <v-icon>mdi-plus</v-icon>
-            </v-btn>
-          </v-card-text>
-          <v-divider class="m-0" style="border-color: black;"></v-divider>
-          <v-card-text style="font-size: 15px;">
-            Total Harga : Rp {{ buku?.harga * reCartStore.findBuku(buku?.id).jumlah }}
-          </v-card-text>
-          <v-divider class="m-0" style="border-color: black;"></v-divider>
-          <v-card-action>
-            <v-btn color="blue darken-1" text outlined> Keranjang </v-btn>
-            <v-btn color="blue darken-1" text> Bayar </v-btn>
-          </v-card-action>
-        </span>
-      </v-card>
-    </v-col>
 
     <v-card color="#CCDFEF" class="my-5" elevation="0">
       <v-card-title class="text-center">Rekomendasi Untukmu</v-card-title>
@@ -258,10 +165,7 @@
         </v-card-sub-title>
         <v-card-title class="text-center">Yakin pilih buku ini untuk dibeli?</v-card-title>
         <v-card-action>
-          <v-btn color="success darken-1" text @click="
-  addToChart(buku);
-region = false
-          ">Iya</v-btn>
+          <v-btn color="success darken-1" text @click="addToChart(buku); region = false">Iya</v-btn>
           <v-btn color="red darken-1" text @click="region = false">Tidak</v-btn>
         </v-card-action>
       </v-card>
@@ -301,10 +205,10 @@ async function fetchBuku() {
   loading.value = false
 }
 
-async function fetchCart() {
-  let res = await cartStore.get()
-  console.log(res);
-}
+  async function fetchCart () {
+    let res = await cartStore.get() 
+    console.log(res);
+  }
 
 async function addToChart(buku) {
   let res = await cartStore.save({ buku_id: buku?.id, jumlah: 1 })
