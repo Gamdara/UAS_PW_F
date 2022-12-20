@@ -47,7 +47,7 @@
           v-if="userData.nama && !reCartStore?.findBuku(buku?.id)">Pilih Buku ini</v-btn>
         <v-card>
           <v-card-title>Review</v-card-title>
-          <v-list-item v-if="userData.nama && !buku?.review.find(x => x.user_id == userData.id)
+          <!-- <v-list-item v-if="userData.nama && !buku.review.find(x => x.user_id == userData.id)
             && transData.find(tran => tran.details.some(detail => detail.buku_id === buku?.id))">
             <v-list-item-avatar>
               <v-img alt="Avatar" :src="userData.foto"></v-img>
@@ -66,13 +66,13 @@
                 <v-btn @click="saveReview">Kirim</v-btn>
               </v-list-item-subtitle>
             </v-list-item-content>
-          </v-list-item>
+          </v-list-item> -->
 
           <!-- review -->
           <v-list three-line>
             <template>
-              <div v-for="(rev, i) in buku?.review" :key="i">
-                <v-divider v-if="i > 0" :key="i"></v-divider>
+              <div v-for="(rev, i) in buku.review" :key="i">
+                <v-divider v-if="i > 0" ></v-divider>
 
                 <v-list-item >
                   <v-list-item-avatar>
@@ -100,7 +100,7 @@
         <v-card>
           <v-card-title class="py-3">Pembelian</v-card-title>
           <v-divider class="m-0" style="border-color: black;"></v-divider>
-          <span v-if="!reCartStore?.findBuku(buku?.id)">
+          <span v-if="!reCartStore.findBuku(buku?.id)">
             <v-card-subtitle class="py-2 text-center">---Belum ada pembelian---</v-card-subtitle>
           </span>
           <span v-else>
@@ -201,14 +201,18 @@ async function fetchBuku() {
   loading.value = true
   await store.get()
   let res = await store.getById(id.value)
-  console.log(res);
+  console.log("buku",res);
   loading.value = false
 }
 
-  async function fetchCart () {
-    let res = await cartStore.get() 
-    console.log(res);
-  }
+async function fetchCart () {
+  let res = await cartStore.get() 
+}
+
+async function fetchTransaksi () {
+  let res = await transaksiStore.get() 
+  console.log(res);
+}
 
 async function addToChart(buku) {
   let res = await cartStore.save({ buku_id: buku?.id, jumlah: 1 })
@@ -227,9 +231,9 @@ async function saveReview() {
 }
 
 onMounted(async () => {
-  fetchBuku()
-  fetchCart()
-  fetchTransaksi()
+  await fetchBuku()
+  await fetchCart()
+  await fetchTransaksi()
 })
 
 const region = ref(false)
