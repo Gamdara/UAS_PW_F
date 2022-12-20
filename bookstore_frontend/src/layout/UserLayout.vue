@@ -66,52 +66,53 @@
 
         <v-navigation-drawer v-model="drawer" fixed temporary right>
             <!-- nnti jadi shopping cart -->
-            <v-list nav dense class="pa-2">
-                <v-header class="">Keranjang</v-header>
-                <v-card class="text-center" v-if="cart.length < 1">
-                    <v-card-title>Keranjang kosong</v-card-title>
+            <v-list nav dense class="pa-5">
+                <v-icon color="blue mb-2 d-flex" style="display: flex; justify-content: center;">mdi-cart</v-icon>
+                <v-spacer></v-spacer>
+                <v-header class="font-weight-bold" style="display: flex; justify-content: center;">Keranjang</v-header>
+                <v-divider class="mt-2 mb-2" style="border-color: black;"></v-divider>
+                <v-card class="mt-3" v-if="cart.length < 1">
+                    <v-card-subtitle class="py-5 text-center">---Belum ada pembelian---</v-card-subtitle>
                 </v-card>
-                <template v-for="(item, i) in cart" >
-                <v-divider
-                    v-if=" i > 0"
-                    :key="i"
-                ></v-divider>
+                <template  >
+                    <div v-for="(item, i) in cart" :key="i">
+                        <v-divider v-if=" i > 0"></v-divider>
+                        <v-list-item >
+                            <v-list-item-avatar>
+                            <v-img :src="item.buku.cover"></v-img>
+                            </v-list-item-avatar>
 
-                <v-list-item :key="i">
-                    <v-list-item-avatar>
-                    <v-img :src="item.buku.cover"></v-img>
-                    </v-list-item-avatar>
-
-                    <v-list-item-content>
-                    <v-list-item-subtitle v-html="item.buku.judul"></v-list-item-subtitle>
-                    <v-list-item-title v-html="item.buku.harga * item.jumlah"></v-list-item-title>
-                    <v-list-item-title>
-                        <v-text-field
-                            type="number"
-                            prepend-icon="mdi-minus"
-                            append-outer-icon="mdi-plus"
-                            :value="item.jumlah"
-                            @input="
-                            item.jumlah = $event
-                            editChart(item)
-                            "
-                            @click:prepend="
-                            item.jumlah--;
-                            editChart(item)
-                            "
-                            @click:append-outer="
-                            item.jumlah++;
-                            editChart(item)
-                            "
-                        ></v-text-field>
-                    </v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
+                            <v-list-item-content>
+                            <v-list-item-subtitle v-html="item.buku.judul"></v-list-item-subtitle>
+                            <v-list-item-title v-html="item.buku.harga * item.jumlah"></v-list-item-title>
+                            <v-list-item-title>
+                                <v-text-field
+                                    type="number"
+                                    prepend-icon="mdi-minus"
+                                    append-outer-icon="mdi-plus"
+                                    :value="item.jumlah"
+                                    @input="
+                                    item.jumlah = $event
+                                    editChart(item)
+                                    "
+                                    @click:prepend="
+                                    item.jumlah--;
+                                    editChart(item)
+                                    "
+                                    @click:append-outer="
+                                    item.jumlah++;
+                                    editChart(item)
+                                    "
+                                ></v-text-field>
+                            </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </div>
                 </template>
             </v-list>
             <template v-slot:append v-if="cart.length > 0">
                 <div class="pa-2">
-                <v-btn block @click="dialog = true">
+                <v-btn color="success" block @click="dialog = true">
                     Checkout
                 </v-btn>
                 </div>
@@ -125,30 +126,32 @@
         <Footer />
 
         <v-dialog v-model="dialog" max-width="600px">
-            <v-card class="p-4">
+            <v-card class="p-2">
               <v-card-title>Checkout</v-card-title>
               <v-card-sub-title>
-                <v-list nav dense class="pa-2">
-                    <template v-for="(item, i) in cart" >
-                    <v-list-item :key="i">
-                        <v-list-item-avatar>
-                        <v-img :src="item.buku.cover"></v-img>
-                        </v-list-item-avatar>
-                        <v-list-item-content>
-                        <v-list-item-subtitle v-html="item.buku.judul"></v-list-item-subtitle>
-                        <v-list-item-title v-html="item.buku.harga * item.jumlah"></v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
+                <v-list nav dense>
+                    <template>
+                        <div v-for="(item, i) in cart" :key="i">
+                            <v-list-item >
+                                <v-list-item-avatar class="ms-2">
+                                    <v-img :src="item.buku.cover"></v-img>
+                                </v-list-item-avatar>
+                                <v-list-item-content>
+                                <v-list-item-subtitle v-html="item.buku.judul"></v-list-item-subtitle>
+                                <v-list-item-title v-html="item.buku.harga * item.jumlah"></v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                            <v-divider class="m-0"></v-divider>
+                        </div>
                     </template>
                 </v-list>
               </v-card-sub-title>
-              <v-card-title class="text-center">Total : {{ cart.reduce((total,x) => total + (x.jumlah * x.buku.harga),0) }}</v-card-title>
-              <v-card-action>
-                <v-btn color="success darken-1" text @click="
-                  dialog = false
-                  addTransaksi()
-                  ">Iya</v-btn>
+              <v-card-title style="display: flex; justify-content: center;">Total : Rp {{ cart.reduce((total,x) => total + (x.jumlah * x.buku.harga),0) }}</v-card-title>
+              <v-card-action style="display: flex; justify-content: center;">
+                <v-spacer></v-spacer>
+                <v-btn color="success darken-1" text @click="dialog = false; addTransaksi()">Iya</v-btn>
                 <v-btn color="red darken-1" text @click="dialog = false">Tidak</v-btn>
+                <v-spacer></v-spacer>
               </v-card-action>
             </v-card>
         </v-dialog>

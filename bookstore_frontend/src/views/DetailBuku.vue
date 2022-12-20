@@ -107,7 +107,10 @@
             <v-card-subtitle class="py-2 text-center">---Belum ada pembelian---</v-card-subtitle>
           </span>
           <span v-else>
-            <v-card-text style="font-size: 20px;">{{ buku?.judul }}
+            <v-card-text style="font-size: 20px;">
+              <div class="mb-2">
+                {{ buku?.judul }}
+              </div>
               <v-spacer></v-spacer>
               <v-btn class="mx-2" fab dark x-small color="primary" elevation="1" @click="
                 reCartStore.findBuku(buku?.id).jumlah--; editChart(reCartStore.findBuku(buku?.id))">
@@ -121,12 +124,11 @@
             </v-card-text>
             <v-divider class="m-0" style="border-color: black;"></v-divider>
             <v-card-text style="font-size: 15px;">
-              Total Harga : Rp {{ buku?.harga * reCartStore.findBuku(buku?.id).jumlah }}
+              Total Harga : <b>Rp {{ buku?.harga * reCartStore.findBuku(buku?.id).jumlah }}</b>
             </v-card-text>
             <v-divider class="m-0" style="border-color: black;"></v-divider>
             <v-card-action>
-              <v-btn color="blue darken-1" text outlined> Keranjang </v-btn>
-              <v-btn color="blue darken-1" text > Bayar </v-btn>
+              <v-btn color="blue darken-1" text block> Bayar </v-btn>
             </v-card-action>
           </span>
         </v-card>
@@ -149,11 +151,12 @@
     </v-card>
 
     <v-dialog v-model="region" max-width="600px">
-      <v-card class="p-4">
-        <v-card-title>{{ buku?.judul }}</v-card-title>
-        <v-card-sub-title>
-          <p class="ms-2 mb-0 font-weight-bold">Detail</p>
-          <v-row class="ms-4">
+      <v-card class="pa-4">
+        <v-card-title style="display: flex; justify-content: center;">{{ buku?.judul }}</v-card-title>
+        <v-divider style="color: black;"></v-divider>
+        <v-card-text style="color: black;">
+          <p class="mb-0 font-weight-bold">Detail</p>
+          <v-row class="ps-4">
             <v-col cols="6">
               <p>Bahasa : {{ buku?.bahasa }}</p>
               <p>Jumlah Halaman : {{ buku?.halaman }}</p>
@@ -165,9 +168,9 @@
               <p>Tanggal Terbit : {{ buku?.tgl_terbit }}</p>
             </v-col>
           </v-row>
-        </v-card-sub-title>
-        <v-card-title class="text-center">Yakin pilih buku ini untuk dibeli?</v-card-title>
-        <v-card-action>
+        </v-card-text>
+        <v-card-title style="display: flex; justify-content: center;">Yakin pilih buku ini untuk dibeli?</v-card-title>
+        <v-card-action style="display: flex; justify-content: center;">
           <v-btn color="success darken-1" text @click="addToChart(buku); region = false">Iya</v-btn>
           <v-btn color="red darken-1" text @click="region = false">Tidak</v-btn>
         </v-card-action>
@@ -179,7 +182,7 @@
 /* eslint-disable */
 import { useBukuStore } from '@/stores/buku';
 import { CatCarousel } from 'vue-cat-carousel'
-/* eslint-disable */import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import router from '@/router';
 import { useKeranjangStore } from '@/stores/keranjang';
 import { useUserStore } from '../stores/user';
