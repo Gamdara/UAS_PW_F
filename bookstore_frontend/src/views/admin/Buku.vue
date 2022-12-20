@@ -114,7 +114,8 @@
                     <v-text-field v-model="formContent.halaman" label="halaman" required></v-text-field>
                     <v-text-field v-model="formContent.isbn" label="isbn" required></v-text-field>
                     <v-text-field v-model="formContent.bahasa" label="bahasa" required></v-text-field>
-                    <v-text-field v-model="formContent.stok" label="stok" required></v-text-field>
+                    <v-text-field v-model="formContent.stok" label="stok" type="number" required></v-text-field>
+                    <v-text-field v-model="formContent.harga" label="harga" required type="number"></v-text-field>
                     <v-menu
                         v-model="menu"
                         :close-on-content-click="false"
@@ -240,7 +241,7 @@ async function insert(data){
                 { text: "Genre", value: "genre.nama" },
                 { text: "Penulis", value: "penulis.nama" },
                 { text: "Stok", value: "stok" },
-                { text: "Penerbit", value: "penerbit" },
+                { text: "Harga", value: "harga" },
                 { text: "Actions", value: "actions" },
                 { text: '', value: 'data-table-expand' },
             ],
