@@ -25,7 +25,7 @@
           <v-card style="background-color: azure;" elevation="0" class="p-0">
             <v-card-text >
               Harga :
-              <v-card-title class="p-0 font-weight-bold" style="font-size: 20px;">Rp {{ buku?.harga }}</v-card-title>
+              <v-card-title class="p-0 font-weight-bold" style="font-size: 20px;"> {{ formater.format(buku?.harga) }}</v-card-title>
             </v-card-text>
             <v-divider class="m-0" style="color: black;"></v-divider>
           </v-card>
@@ -136,7 +136,7 @@
             </v-card-text>
             <v-divider class="m-0" style="border-color: black;"></v-divider>
             <v-card-text style="font-size: 15px;">
-              Total Harga : <b>Rp {{ buku?.harga * reCartStore.findBuku(buku?.id).jumlah }}</b>
+              Total Harga : <b>{{ formater.format(buku?.harga * reCartStore.findBuku(buku?.id).jumlah) }}</b>
             </v-card-text>
             <v-divider class="m-0" style="border-color: black;"></v-divider>
             <v-card-action>
@@ -153,9 +153,9 @@
         <cat-carousel :items="data" :item-per-page="7"
           :indicators-config="{ activeColor: '#000', size: 8, color: '#d1d1d1', hideIndicators: false }">
           <template slot="item" slot-scope="{data}">
-            <v-card elevation="0" class="my-2 p-3" outlined :to="'/detail/' + data.id">
+            <v-card elevation="0" class="my-2" outlined :to="'/detail/' + data.id">
               <v-img max-height="200px" :src="data.cover"></v-img>
-              <v-card-title>{{ data.judul }}</v-card-title>
+              <v-card-text class="font-weight-bold">{{ data.judul }}</v-card-text>
             </v-card>
           </template>
         </cat-carousel>
@@ -215,6 +215,9 @@ const userData = computed(() => userStore.user)
 const reCartStore = computed(() => cartStore);
 const transData = computed(() => transaksiStore.transaksi)
 
+//formater
+const formater = new Intl.NumberFormat("id-ID", { style: "currency", currency : "IDR", minimumFractionDigits: 0 })
+
 async function fetchBuku() {
   loading.value = true
   await store.get()
@@ -268,7 +271,6 @@ const items = [
     href: ''
   }
 ]
-const itemCaro = [{ name: 'hans' }, { name: 'sagita' }, { name: 'hans' }, { name: 'sagita' }, { name: 'hans' }, { name: 'sagita' }, { name: 'hans' }, { name: 'sagita' }, { name: 'hans' }, { name: 'sagita' }, { name: 'hans' }, { name: 'sagita' }]
 </script>
 <style>
 .detailBuku {
