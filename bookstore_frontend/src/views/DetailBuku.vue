@@ -209,6 +209,10 @@ import { useTransaksiStore } from '@/stores/transaksi';
 
   async function fetchCart () {
     let res = await cartStore.get() 
+  }
+
+  async function fetchTransaksi () {
+    let res = await transaksiStore.get() 
     console.log(res);
   }
 
@@ -231,6 +235,7 @@ import { useTransaksiStore } from '@/stores/transaksi';
 onMounted(async ()=>{
   fetchBuku()
   fetchCart()
+  fetchTransaksi()
 })
 
 const region =  ref(false)

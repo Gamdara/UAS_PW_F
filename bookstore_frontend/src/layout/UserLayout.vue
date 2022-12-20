@@ -177,6 +177,8 @@ const cart = computed(() => cartStore.keranjang);
 
 async function logout(){
     const res = await store.logout()
+    await cartStore.get()
+    await tranStore.get()
 }
 
 async function editChart (data) {

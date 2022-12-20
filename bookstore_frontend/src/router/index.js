@@ -9,6 +9,7 @@ import HelloWorld from '../components/HelloWorld.vue'
 import Genre from '../views/admin/Genres.vue'
 import Penulis from '../views/admin/Penulis.vue'
 import Buku from '../views/admin/Buku.vue'
+// import isadmin from '@/middleware/isadmin'
 
 Vue.use(VueRouter)
 
@@ -65,7 +66,7 @@ const routes = [
   {
     path: '/admin',
     component: AdminLayout,
-    beforeEnter: auth,
+    // beforeEnter: isadmin,
     children: [
       {
         path: '/admin/home',
