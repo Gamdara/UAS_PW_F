@@ -16,7 +16,7 @@
   
             <v-data-table :headers="headers" :items="riwayats" :search="search" > 
               <template v-slot:[`item.image`]="{ item }">
-                  <img :src="item.image"></img>
+                  <img :src="item.image">
               </template>
               </v-data-table> 
   
@@ -24,9 +24,9 @@
   
         <v-snackbar v-model="snackbar" :color="color" timeout="2000" bottom>{{ error_message }}</v-snackbar>
     </v-main> 
-  </template>
-  
-  <script> 
+</template>
+<script>
+/* eslint-disable */
   export default {
     name: "ListBuku",
     data() { 
@@ -94,4 +94,4 @@
         this.readData();
     },
   };
-  </script>
+</script>

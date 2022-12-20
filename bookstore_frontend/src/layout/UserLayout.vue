@@ -74,42 +74,40 @@
                 <v-card class="mt-3" v-if="cart.length < 1">
                     <v-card-subtitle class="py-5 text-center">---Belum ada pembelian---</v-card-subtitle>
                 </v-card>
-                <template v-for="(item, i) in cart" >
-                <v-divider
-                    v-if=" i > 0"
-                    :key="i"
-                ></v-divider>
+                <template  >
+                    <div v-for="(item, i) in cart" :key="i">
+                        <v-divider v-if=" i > 0"></v-divider>
+                        <v-list-item >
+                            <v-list-item-avatar>
+                            <v-img :src="item.buku.cover"></v-img>
+                            </v-list-item-avatar>
 
-                <v-list-item :key="i">
-                    <v-list-item-avatar>
-                    <v-img :src="item.buku.cover"></v-img>
-                    </v-list-item-avatar>
-
-                    <v-list-item-content>
-                    <v-list-item-subtitle v-html="item.buku.judul"></v-list-item-subtitle>
-                    <v-list-item-title v-html="item.buku.harga * item.jumlah"></v-list-item-title>
-                    <v-list-item-title>
-                        <v-text-field
-                            type="number"
-                            prepend-icon="mdi-minus"
-                            append-outer-icon="mdi-plus"
-                            :value="item.jumlah"
-                            @input="
-                            item.jumlah = $event
-                            editChart(item)
-                            "
-                            @click:prepend="
-                            item.jumlah--;
-                            editChart(item)
-                            "
-                            @click:append-outer="
-                            item.jumlah++;
-                            editChart(item)
-                            "
-                        ></v-text-field>
-                    </v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
+                            <v-list-item-content>
+                            <v-list-item-subtitle v-html="item.buku.judul"></v-list-item-subtitle>
+                            <v-list-item-title v-html="item.buku.harga * item.jumlah"></v-list-item-title>
+                            <v-list-item-title>
+                                <v-text-field
+                                    type="number"
+                                    prepend-icon="mdi-minus"
+                                    append-outer-icon="mdi-plus"
+                                    :value="item.jumlah"
+                                    @input="
+                                    item.jumlah = $event
+                                    editChart(item)
+                                    "
+                                    @click:prepend="
+                                    item.jumlah--;
+                                    editChart(item)
+                                    "
+                                    @click:append-outer="
+                                    item.jumlah++;
+                                    editChart(item)
+                                    "
+                                ></v-text-field>
+                            </v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </div>
                 </template>
             </v-list>
             <template v-slot:append v-if="cart.length > 0">
