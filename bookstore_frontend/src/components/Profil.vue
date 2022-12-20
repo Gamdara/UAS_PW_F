@@ -1,18 +1,18 @@
 <template>
     <div>
-        <v-container fluid fill-height class="posisinya mt-15">
+        <v-container fluid fill-height class="posisinya mt-5">
             <v-row align="center" justify="center" >
                 <v-form ref="form" >
                     <v-row>
                         <v-col>
-                            <v-card class="mt-6" width="500px" min-height="300px">
+                            <v-card style="margin: auto;" class="mb-3" width="500px" min-height="300px">
                                 <v-row align="center" justify="center" class="mt-n5">
                                     <v-card append color="success" width="450px" height="50px">
                                         <v-card-title class="cardTitle pa-0 my-2 justify-center"> {{ cardtitle }} </v-card-title>
                                     </v-card>
                                 </v-row>
                                 <v-row>
-                                    <v-col class="mt-3 ml-8 mr-4 mb-3" cols="3">
+                                    <v-col class="mt-3 ml-8 mr-4 mb-2" cols="3">
                                         <v-avatar size="120">
                                             <v-img  :src="preview_foto ? preview_foto : user.foto ? user.foto : '@/assets/logo.png'"></v-img>
                                         </v-avatar>
@@ -31,25 +31,23 @@
                                         <v-text-field class="formtxt"  v-model="user.no_hp" label="No Hp" :error-messages="errors.no_hp" :readonly="btnEdit == false"></v-text-field>
                                     </v-col>
                                 </v-row>
-                                <v-row v-if="btnEdit == true" class="mx-8 mt-n6 mb-3">
+                                <v-row v-if="btnEdit == true" class="mx-8 mt-n6 mb-2">
                                     <v-checkbox v-model="enabled" hide-details class="shrink" ></v-checkbox>
                                     <v-text-field v-model="newPassword" class="formtxt"  :disabled="!enabled" :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'" :type="show ? 'text' : 'password'" @click:append="show = !show" label="Password baru" placeholder="New Password"></v-text-field>
                                 </v-row>
-                                <v-col class="mt-5 ml-10" cols="3">
-                                        <v-row>
-                                            <v-btn class="my-10" v-if="btnEdit == false" @click.stop="btnEdit = !btnEdit" rounded outlined color="danger">
-                                                <v-icon>mdi-pencil</v-icon>
-                                            </v-btn>
-                                        </v-row>
-                                        <v-row>
-                                            <v-btn class="my-5" v-if="btnEdit == true" @click="save" rounded outlined color="success">
-                                                <v-icon>mdi-check-bold</v-icon>
-                                            </v-btn>
-                                            <v-btn class="my-5" v-if="btnEdit == true" @click="cancel" rounded outlined color="error">
-                                                <v-icon>mdi-close-thick</v-icon>
-                                            </v-btn>
-                                        </v-row>
-                                    </v-col>
+                                <v-row class="my-2 mx-8">
+                                    <v-btn block class="mb-10" v-if="btnEdit == false" @click.stop="btnEdit = !btnEdit" rounded outlined color="red">
+                                        <v-icon>mdi-pencil</v-icon>
+                                    </v-btn>
+                                </v-row>
+                                <v-row class="my-2 mx-8">
+                                    <v-btn class="mb-5" v-if="btnEdit == true" @click="save" rounded outlined color="success">
+                                        <v-icon>mdi-check-bold</v-icon>
+                                    </v-btn>
+                                    <v-btn class="mb-10" v-if="btnEdit == true" @click="cancel" rounded outlined color="error">
+                                        <v-icon>mdi-close-thick</v-icon>
+                                    </v-btn>
+                                </v-row>
                             </v-card>
                         </v-col>
                     </v-row>
@@ -61,7 +59,7 @@
 </template>
 <style>
     .cardTitle{
-        font-family: Akshar;
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
         font-size: 30px;
         color: yellow;
     }

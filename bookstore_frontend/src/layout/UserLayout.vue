@@ -84,7 +84,7 @@
 
                             <v-list-item-content>
                             <v-list-item-subtitle v-html="item.buku.judul"></v-list-item-subtitle>
-                            <v-list-item-title v-html="item.buku.harga * item.jumlah"></v-list-item-title>
+                            <v-list-item-title v-html="formater.format(item.buku.harga * item.jumlah)"></v-list-item-title>
                             <v-list-item-title>
                                 <v-text-field
                                     type="number"
@@ -138,7 +138,7 @@
                                 </v-list-item-avatar>
                                 <v-list-item-content>
                                 <v-list-item-subtitle v-html="item.buku.judul"></v-list-item-subtitle>
-                                <v-list-item-title v-html="item.buku.harga * item.jumlah"></v-list-item-title>
+                                <v-list-item-title v-html="formater.format(item.buku.harga * item.jumlah)"></v-list-item-title>
                                 </v-list-item-content>
                             </v-list-item>
                             <v-divider class="m-0"></v-divider>
@@ -146,7 +146,7 @@
                     </template>
                 </v-list>
               </v-card-sub-title>
-              <v-card-title style="display: flex; justify-content: center;">Total : Rp {{ cart.reduce((total,x) => total + (x.jumlah * x.buku.harga),0) }}</v-card-title>
+              <v-card-title style="display: flex; justify-content: center;">Total : {{ formater.format(cart.reduce((total,x) => total + (x.jumlah * x.buku.harga),0)) }}</v-card-title>
               <v-card-action style="display: flex; justify-content: center;">
                 <v-spacer></v-spacer>
                 <v-btn color="success darken-1" text @click="dialog = false; addTransaksi()">Iya</v-btn>
@@ -177,6 +177,9 @@ const drawer = ref(false)
 const user = computed(() => store.user);
 const auth = computed(() => store.token);
 const cart = computed(() => cartStore.keranjang);
+
+//formater
+const formater = new Intl.NumberFormat("id-ID", { style: "currency", currency : "IDR", minimumFractionDigits: 0 })
 
 async function logout(){
     const res = await store.logout()

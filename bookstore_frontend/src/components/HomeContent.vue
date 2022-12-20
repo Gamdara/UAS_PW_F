@@ -8,7 +8,7 @@
             <v-card-title>Buku Terlaris</v-card-title>
           </v-col>
           <v-col class="py-0">
-            <router-link to="/" style="text-align: end;"> Selengkapnya>> </router-link>
+            <router-link to="/" style="display: flex; justify-content: end;" class="me-5 mt-6"> Selengkapnya>> </router-link>
           </v-col>
         </v-row>
         <v-card-subtitle >
@@ -27,7 +27,7 @@
 
               <v-card-text>
                 <div class="text-subtitle-1">
-                  Rp {{buku.harga}}
+                  {{ formater.format(buku.harga) }}
                 </div>
                 <v-row>
                   <v-rating :value="buku.rating" color="amber" dense half-increments readonly size="14"></v-rating>
@@ -88,11 +88,15 @@ import { useBukuStore } from '@/stores/buku';
 import { useKeranjangStore } from '@/stores/keranjang';
 import { computed, onMounted,  reactive,  ref } from 'vue'
 import carousel from 'vue-owl-carousel'
+
   const loading = ref(false)
   const store = useBukuStore()
   const data = computed(() => store.buku);
   const cartStore = useKeranjangStore()
   const reCartStore = computed(() => cartStore);
+
+  //formater
+const formater = new Intl.NumberFormat("id-ID", { style: "currency", currency : "IDR", minimumFractionDigits: 0 })
   
   async function fetchBuku () {
     loading.value = true

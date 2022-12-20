@@ -6,6 +6,9 @@
         <v-card class="p-4 mx-5 mb-5">
           <v-img max-width="100%" :src="buku?.cover"></v-img>
         </v-card>
+        <v-divider class="m-0" style="border-color: black;"></v-divider>
+        <p class="m-2" style="text-align: center;">Stok : {{ buku?.stok }}</p>
+        <v-divider class="m-0" style="border-color: black;"></v-divider>
       </v-col>
       <v-col cols="6">
         <p class="mb-0" style="font-size: 20px; color: slategray;">{{ buku?.penulis?.nama }}</p>
@@ -17,6 +20,15 @@
               {{ buku?.rating }} ({{ buku?.review?.length }})
             </div>
           </div>
+        </v-row>
+        <v-row class="p-2">
+          <v-card style="background-color: azure;" elevation="0" class="p-0">
+            <v-card-text >
+              Harga :
+              <v-card-title class="p-0 font-weight-bold" style="font-size: 20px;"> {{ formater.format(buku?.harga) }}</v-card-title>
+            </v-card-text>
+            <v-divider class="m-0" style="color: black;"></v-divider>
+          </v-card>
         </v-row>
         <!-- <p class="mt-5 mb-0 font-weight-bold">Deskripsi Buku</p>
                 <p>
@@ -42,7 +54,7 @@
           </v-col>
         </v-row>
 
-        <v-btn class="mt-4 mb-4" color="success" to="/login" v-if="!userData.nama">Login untuk membeli</v-btn>
+        <v-btn class="mt-4 mb-4" color="success" to="/login" v-if="!userData.nama" outlined>Login untuk membeli</v-btn>
         <v-btn class="mt-4 mb-4" color="success" @click="region = true"
           v-if="userData.nama && !reCartStore?.findBuku(buku?.id)">Pilih Buku ini</v-btn>
         <v-card>
@@ -83,7 +95,7 @@
                   </v-list-item-avatar>
 
                   <v-list-item-content>
-                    <v-list-item-subtitle v-html="rev.user.username"></v-list-item-subtitle>
+                    <v-list-item-subtitle v-html="rev.user.nama"></v-list-item-subtitle>
                     <v-list-item-subtitle>
                       <div class="d-flex flex-row">
                         <v-rating v-model="rev.nilai" color="amber" dense half-increments size="14"></v-rating>
@@ -100,8 +112,8 @@
         </v-card>
       </v-col>
       <v-col cols="3">
-        <v-card>
-          <v-card-title class="py-3">Pembelian</v-card-title>
+        <v-card class="my-3">
+          <v-card-title >Pembelian</v-card-title>
           <v-divider class="m-0" style="border-color: black;"></v-divider>
           <span v-if="!reCartStore.findBuku(buku?.id)">
             <v-card-subtitle class="py-2 text-center">---Belum ada pembelian---</v-card-subtitle>
@@ -124,7 +136,7 @@
             </v-card-text>
             <v-divider class="m-0" style="border-color: black;"></v-divider>
             <v-card-text style="font-size: 15px;">
-              Total Harga : <b>Rp {{ buku?.harga * reCartStore.findBuku(buku?.id).jumlah }}</b>
+              Total Harga : <b>{{ formater.format(buku?.harga * reCartStore.findBuku(buku?.id).jumlah) }}</b>
             </v-card-text>
             <v-divider class="m-0" style="border-color: black;"></v-divider>
             <v-card-action>
@@ -141,9 +153,9 @@
         <cat-carousel :items="data" :item-per-page="7"
           :indicators-config="{ activeColor: '#000', size: 8, color: '#d1d1d1', hideIndicators: false }">
           <template slot="item" slot-scope="{data}">
-            <v-card elevation="0" class="my-2 p-3" outlined :to="'/detail/' + data.id">
+            <v-card elevation="0" class="my-2" outlined :to="'/detail/' + data.id">
               <v-img max-height="200px" :src="data.cover"></v-img>
-              <v-card-title>{{ data.judul }}</v-card-title>
+              <v-card-text class="font-weight-bold">{{ data.judul }}</v-card-text>
             </v-card>
           </template>
         </cat-carousel>
@@ -203,6 +215,9 @@ const userData = computed(() => userStore.user)
 const reCartStore = computed(() => cartStore);
 const transData = computed(() => transaksiStore.transaksi)
 
+//formater
+const formater = new Intl.NumberFormat("id-ID", { style: "currency", currency : "IDR", minimumFractionDigits: 0 })
+
 async function fetchBuku() {
   loading.value = true
   await store.get()
@@ -256,7 +271,6 @@ const items = [
     href: ''
   }
 ]
-const itemCaro = [{ name: 'hans' }, { name: 'sagita' }, { name: 'hans' }, { name: 'sagita' }, { name: 'hans' }, { name: 'sagita' }, { name: 'hans' }, { name: 'sagita' }, { name: 'hans' }, { name: 'sagita' }, { name: 'hans' }, { name: 'sagita' }]
 </script>
 <style>
 .detailBuku {
