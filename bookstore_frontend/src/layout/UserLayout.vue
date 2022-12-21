@@ -195,7 +195,9 @@ const formater = new Intl.NumberFormat("id-ID", { style: "currency", currency : 
 async function logout(){
     const res = await store.logout()
     await cartStore.get()
+    cartStore.keranjang = []
     await tranStore.get()
+    tranStore.transaksi = []
 }
 
 async function editChart (data) {
