@@ -21,7 +21,7 @@
             <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav>
                     <b-nav-item router-link to="/">Home</b-nav-item>
-                    <b-nav-item-dropdown right>
+                    <!-- <b-nav-item-dropdown right>
                         <template #button-content>
                             Tentang
                         </template>
@@ -37,8 +37,8 @@
                         <b-dropdown-item href="#">Buku Non Fiksi</b-dropdown-item>
                         <b-dropdown-item href="#">Majalah</b-dropdown-item>
                         <b-dropdown-item href="#">Kamus</b-dropdown-item>
-                    </b-nav-item-dropdown>
-                    <b-nav-item href="#">Terbaru</b-nav-item>
+                    </b-nav-item-dropdown> -->
+                    <b-nav-item to="/histori">Riwayat Pemebelian</b-nav-item>
                 </b-navbar-nav>
 
                 <!-- Right aligned nav items -->
@@ -47,7 +47,14 @@
                         <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
                         <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
                     </b-nav-form> -->
-                    <b-nav-item @click="drawer = true" class="me-4"><v-icon>mdi-cart</v-icon></b-nav-item>
+                    <v-badge
+                        :content="cart.length"
+                        :value="cart.length"
+                        color="green"
+                        overlap
+                    >
+                        <b-nav-item @click="drawer = true" ><v-icon>mdi-cart</v-icon></b-nav-item>
+                    </v-badge>
                     <span v-if="auth">
                         <b-nav-item-dropdown left>
                             <template #button-content>
@@ -120,7 +127,7 @@
         </v-navigation-drawer>
         <v-main>
             <v-container style="max-width: 100%; padding: 0;">
-                <router-view></router-view>
+                <router-view  :key="$route.fullPath"></router-view>
             </v-container>
         </v-main>
         <Footer />
@@ -212,6 +219,7 @@ async function addTransaksi () {
     await tranStore.get()
     await bukuStore.get()
     await bukuStore.getById(bukuStore.selected.id)
+    alert.value = {color: 'green', msg: "Berhasil checkout", show:true }
 }
 
 onMounted(async () => {

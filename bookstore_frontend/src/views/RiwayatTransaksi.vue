@@ -34,8 +34,8 @@
                 <!-- {{ item.details }} -->
                 <v-list nav dense>
                     <template>
-                        <div v-for="(detail, i) in item.details" :key="i">
-                            <v-list-item >
+                        <div v-for="(detail, i) in item.details" :key="i" >
+                            <v-list-item :to="'/detail/'+detail.bukus.id">
                                 <v-list-item-avatar class="ms-2" style="border-radius:0px" width="70px" height="100px">
                                     <v-img :src="detail.bukus.cover"></v-img>
                                 </v-list-item-avatar>

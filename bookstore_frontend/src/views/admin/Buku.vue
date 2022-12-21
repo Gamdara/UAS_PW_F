@@ -56,7 +56,7 @@
             <template v-slot:expanded-item="{ headers,item }">
                 <td :colspan="headers.length">
                     <v-row class="pa-2">
-                        <v-col cols="4">
+                        <v-col cols="1">
                             <v-img
                             width="70px" height="100px"
                             contain
@@ -64,26 +64,21 @@
                             :src="item.cover"
                             ></v-img>
                         </v-col>
-                        <v-row>
-                            <v-col cols="4">
-                                <label>{{item.halaman}}</label>
+                        <v-col cols="11">
+                            <p class="mt-5 mb-0 font-weight-bold">Detail</p>
+                            <v-row class="ms-2">
+                            <v-col cols="6">
+                                <p>Bahasa : {{ item?.bahasa }}</p>
+                                <p>Jumlah Halaman : {{ item?.halaman }}</p>
+                                <p>Genre : {{ item?.genre?.nama }}</p>
                             </v-col>
-                            <v-col cols="4">
-                                <label>{{item.penerbit}}</label>
+                            <v-col cols="6">
+                                <p>Penulis : {{ item?.penulis?.nama }}</p>
+                                <p>Penerbit : {{ item?.penerbit }}</p>
+                                <p>Tanggal Terbit : {{ item?.tgl_terbit }}</p>
                             </v-col>
-                            <v-col cols="4">
-                                <label>{{item.isbn}}</label>
-                            </v-col>
-                            <v-col cols="4">
-                                <label>{{item.bahasa}}</label>
-                            </v-col>
-                            <v-col cols="4">
-                                <label>{{item.tgl_lahir}}</label>
-                            </v-col>
-                            <v-col cols="4">
-                                <label>{{item.sinopsis}}</label>
-                            </v-col>
-                        </v-row>
+                            </v-row>
+                        </v-col>
                     </v-row>
                 </td>
             </template>
@@ -131,7 +126,7 @@
                         <template v-slot:activator="{ on, attrs }">
                         <v-text-field
                             v-model="formContent.tgl_terbit"
-                            label="Tanggal lahir"
+                            label="Tanggal terbit"
                             readonly
                             v-bind="attrs"
                             v-on="on"
@@ -143,7 +138,7 @@
                         ></v-date-picker>
                     </v-menu>
                     <v-text-field v-model="formContent.sinopsis" label="sinopsis" required></v-text-field>
-                    <v-file-input v-model="formContent.cover" label="sinopsis" required></v-file-input>
+                    <v-file-input v-model="formContent.cover" label="cover" required></v-file-input>
                 </v-container>
             </v-card-text>
             <v-card-actions>

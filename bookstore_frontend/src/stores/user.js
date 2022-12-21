@@ -26,6 +26,9 @@ export const useUserStore = defineStore("user",{
                 this.token = res.data.token
                 this.user = res.data.data
                 localStorage.setItem('token',this.token)
+                if(this.user.role=='admin')
+                this.$router.push('/admin')
+                else
                 this.$router.push('/')
                 return res.data
             }

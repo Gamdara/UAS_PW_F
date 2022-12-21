@@ -147,7 +147,7 @@
             </v-card-text>
             <v-divider class="m-0" style="border-color: black;"></v-divider>
             <v-card-action>
-              <v-btn color="blue darken-1" text block> Bayar </v-btn>
+              <v-btn color="blue darken-1" text block @click="dialog = true"> Bayar </v-btn>
             </v-card-action>
           </span>
         </v-card>
@@ -157,12 +157,29 @@
     <v-card color="#CCDFEF" class="my-5" elevation="0">
       <v-card-title class="text-center">Rekomendasi Untukmu</v-card-title>
       <v-card-subtitle>
-        <cat-carousel :items="data" :item-per-page="7"
+        <cat-carousel :items="data" :item-per-page="6"
           :indicators-config="{ activeColor: '#000', size: 8, color: '#d1d1d1', hideIndicators: false }">
           <template slot="item" slot-scope="{data}">
-            <v-card elevation="0" class="my-2" outlined :to="'/detail/' + data.id">
+            <v-card class="my-5" max-width="165" :to="'/detail/'+data.id">
+              <!-- :to='"/detail/"+buku.id' -->
+
               <v-img max-height="200px" :src="data.cover"></v-img>
-              <v-card-text class="font-weight-bold">{{ data.judul }}</v-card-text>
+
+              <v-card-title>{{data.judul}}</v-card-title>
+              <v-card-subtitle>{{data.penulis.nama}}</v-card-subtitle>
+
+              <v-card-text>
+                <div class="text-subtitle-1">
+                  {{ formater.format(data.harga) }}
+                </div>
+                <v-row>
+                  <v-rating :value="data.rating" color="amber" dense half-increments readonly size="14"></v-rating>
+
+                  <div class="grey--text ms-4">
+                    {{data.rating}} ({{data.review?.length}})
+                  </div>
+                </v-row>
+              </v-card-text>
             </v-card>
           </template>
         </cat-carousel>
@@ -195,6 +212,37 @@
         </v-card-action>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="dialog" max-width="600px">
+        <v-card class="p-2">
+          <v-card-title>Checkout</v-card-title>
+          <v-card-sub-title>
+            <v-list nav dense>
+                <template>
+                    <!-- <div v-for="(item, i) in cart.find(x => x.buku_id = buku.id)" :key="i"> -->
+                        <v-list-item >
+                            <v-list-item-avatar class="ms-2">
+                                <v-img :src="buku.cover"></v-img>
+                            </v-list-item-avatar>
+                            <v-list-item-content>
+                            <v-list-item-subtitle v-html="buku.judul"></v-list-item-subtitle>
+                            <v-list-item-title v-html="formater.format(buku.harga * reCartStore?.findBuku(buku?.id)?.jumlah)"></v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-divider class="m-0"></v-divider>
+                    <!-- </div> -->
+                </template>
+            </v-list>
+          </v-card-sub-title>
+          <v-card-title style="display: flex; justify-content: center;">Total : {{ formater.format(buku.harga * reCartStore?.findBuku(buku?.id)?.jumlah) }}</v-card-title>
+          <v-card-action style="display: flex; justify-content: center;">
+            <v-spacer></v-spacer>
+            <v-btn color="success darken-1" text @click="dialog = false; addTransaksi(reCartStore?.findBuku(buku?.id))">Iya</v-btn>
+            <v-btn color="red darken-1" text @click="dialog = false">Tidak</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-action>
+        </v-card>
+    </v-dialog>
     <v-snackbar v-model="alert.show" :color="alert.color" timeout="2000" bottom>{{ alert.msg }}</v-snackbar>
   </div>
 </template>
@@ -211,6 +259,7 @@ const loading = ref(false)
 const showEdit = ref(false)
 const id = computed(() => router.currentRoute.params.id)
 
+const dialog = ref(false)
 
 const review = ref({ nilai: 0, komentar: "" })
 const store = useBukuStore()
@@ -266,7 +315,21 @@ async function saveReview() {
   await fetchBuku()
 }
 
+async function addTransaksi (x) {
+    await transaksiStore.insert({
+        details : [{...x, subtotal : x.buku.harga * x.jumlah}],
+        total : x.jumlah * x.buku.harga
+    }) 
+    await cartStore.delete(x.buku_id)
+    await cartStore.get()
+    await transaksiStore.get()
+    await store.get()
+    await store.getById(store.selected.id)
+    alert.value = {color: 'green', msg: "Berhasil membeli", show:true }
+}
+
 async function deleteReview() {
+  review.value = {}
   await store.deleteReview(id.value)
   await fetchBuku()
 }

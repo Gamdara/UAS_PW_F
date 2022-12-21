@@ -54,6 +54,24 @@
     </div>
   </template>
 
+<script setup>
+/* eslint-disable */
+import { useKeranjangStore } from '@/stores/keranjang';
+import { useTransaksiStore } from '@/stores/transaksi';
+import { useUserStore } from '@/stores/user';
+
+const store = useUserStore()
+const cartStore = useKeranjangStore()
+const tranStore = useTransaksiStore()
+
+async function logout(){
+    const res = await store.logout()
+    await cartStore.get()
+    await tranStore.get()
+}
+
+</script>
+
 <script>
 /* eslint-disable */
 
@@ -66,17 +84,12 @@ export default {
       drawer: false,
       links: [
         {
-          icon: 'mdi-home',
-          title: 'Home',
-          link: {name: 'AdminHome'}
-        },
-        {
           icon: 'mdi-book',
           title: 'Genre',
           link: {name: 'AdminGenre'}
         },
         {
-          icon: 'mdi-accoubt',
+          icon: 'mdi-account',
           title: 'Penulis',
           link: {name: 'AdminPenulis'}
         },
@@ -86,17 +99,7 @@ export default {
           link: {name: 'AdminBuku'}
         }
       ]
-    }),
-    methods: {
-        logout(){
-            client.get('logout')
-            .then(res=> {
-                localStorage.removeItem('token')
-                this.$router.push('/login')
-            })
-            .catch(err=> console.log(err) )
-        }
-    }
+    })
 }
 </script>
 
