@@ -268,7 +268,9 @@ import html2pdf from "html2pdf.js";
         setEditItem(){
             this.toInsert=false;
             this.formContent = {...this.itemContent}
-
+            this.formContent.genre_id =  {text: this.itemContent.genre.nama, value: this.itemContent.genre.id}
+            this.formContent.penulis_id =  {text: this.itemContent.penulis.nama, value: this.itemContent.penulis.id}
+            console.log(this.formContent);
         },
         exportToPDF() {
             html2pdf(document.getElementById("card"), {
