@@ -198,6 +198,8 @@ async function del(id) {
 
 async function update(data) {
     isLoading.value = true
+    data.genre_id = data.genre_id.value
+    data.penulis_id = data.penulis_id.value
     let res = await store.update(data) 
     validation.value = res.data && !res.data.status ? res.data.errors : {}
     isLoading.value = false
