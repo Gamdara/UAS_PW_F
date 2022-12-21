@@ -9,6 +9,8 @@
         <v-divider class="m-0" style="border-color: black;"></v-divider>
         <p class="m-2" style="text-align: center;">Stok : {{ buku?.stok }}</p>
         <v-divider class="m-0" style="border-color: black;"></v-divider>
+        <v-chip block class="mt-4 mb-4 font-weight-bold pa-5 justify-content-center d-flex" color="red" label v-if="buku.stok == 0"><v-icon class="me-1">mdi-information</v-icon> Buku Tidak Tersedia</v-chip>
+        <v-chip block class="mt-4 mb-4 font-weight-bold pa-5 justify-content-center d-flex" color="green" label v-if="buku.stok > 0">Buku Tersedia</v-chip>
       </v-col>
       <v-col cols="6">
         <p class="mb-0" style="font-size: 20px; color: slategray;">{{ buku?.penulis?.nama }}</p>
